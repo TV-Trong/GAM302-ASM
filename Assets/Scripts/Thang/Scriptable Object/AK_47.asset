@@ -15,16 +15,14 @@ MonoBehaviour:
   weaponName: AK_47
   type: 1
   damage: 25
-  fireRate: 10
-  ammoCapacity: 30
-  reloadTime: 2.5
-  range: 15
-  bulletPrefab: {fileID: 0}
+  fireRate: 0.1
+  ammoCapacity: 9
+  reloadTime: 1.81
+  bulletForce: 14.1
+  bulletPrefab: {fileID: 8372950120113671182, guid: a63e4afbfc768944889c890d35053a32, type: 3}
   fireSound: {fileID: 0}
   reloadSound: {fileID: 0}
   isExplosive: 0
-  explosionRadius: 0
-  explosionDelay: 0
-  hasDamageFalloff: 0
-  minDamage: 0
-  maxDamage: 0
+  explosionData:
+    radius: 0
+    delay: 0

@@ -1,28 +1,34 @@
 ﻿using UnityEngine;
 
-// Enum để phân loại vũ khí
 public enum WeaponType { Pistol, AK47, Shotgun, Grenade }
 
 [CreateAssetMenu(fileName = "NewWeapon", menuName = "Weapon System/Weapon")]
 public class WeaponData : ScriptableObject
 {
+    [Header("Weapon Info")]
     public string weaponName;
-    public WeaponType type;     // Loại ũ khí
-    public float damage;        // sát thương
-    public float fireRate;      //Tốc độ đạn bắn
-    public int ammoCapacity;    //Số lượng đạn tối đa trong 1 băng đạn
-    public float reloadTime;    // thời gian nạp đạn
-    public float range;         //Khoảng cách tấn công
-    public GameObject bulletPrefab; // Đạn hoặc hiệu ứng bắn
+    public WeaponType type;
+
+    [Header("Stats")]
+    [Range(1f, 100f)] public float damage;
+    [Range(0.1f, 5f)] public float fireRate;
+    [Range(1, 100)] public int ammoCapacity;
+    [Range(0.1f, 5f)] public float reloadTime;
+    [Range(0.1f, 100f)] public float bulletForce;
+
+    [Header("Bullet & Sound")]
+    public GameObject bulletPrefab;
     public AudioClip fireSound;
     public AudioClip reloadSound;
 
-    public bool isExplosive;    // xác định vũ khí co phải bom hay không
-    public float explosionRadius;   // bán kính vụ nổ
-    public float explosionDelay;    // thời gian delay khi nổ
+    [Header("Explosive Properties")]
+    public bool isExplosive;
+    public ExplosionData explosionData;
+}
 
-    // Điều chỉnh sát thương dựa trên khoảng cách (chủ yếu cho Shotgun)
-    public bool hasDamageFalloff;
-    public float minDamage;
-    public float maxDamage;
+[System.Serializable]
+public struct ExplosionData
+{
+    [Range(0.1f, 10f)] public float radius;
+    [Range(0f, 5f)] public float delay;
 }

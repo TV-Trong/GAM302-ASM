@@ -18,10 +18,11 @@ MonoBehaviour:
   fireRate: 0.5
   ammoCapacity: 12
   reloadTime: 1.5
-  range: 10
-  bulletPrefab: {fileID: 0}
+  bulletForce: 0.1
+  bulletPrefab: {fileID: 8372950120113671182, guid: a63e4afbfc768944889c890d35053a32, type: 3}
   fireSound: {fileID: 0}
   reloadSound: {fileID: 0}
   isExplosive: 0
-  explosionRadius: 0
-  explosionDelay: 0
+  explosionData:
+    radius: 0
+    delay: 0
