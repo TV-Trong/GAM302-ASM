@@ -1,30 +1,36 @@
-using System.Collections;
-using System.Collections.Generic;
+using Cinemachine;
+using Fusion;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : NetworkBehaviour
 {
     public float moveSpeed = 5f;
 
     public Rigidbody2D rb;
-    public Camera cam;
+    CinemachineVirtualCamera virtualCamera;
 
     Vector2 movement;
     Vector2 mousePos;
+
+    public override void Spawned()
+    {
+        virtualCamera = FindAnyObjectByType<CinemachineVirtualCamera>();
+        virtualCamera.Follow = transform;
+    }
 
     void Update()
     {
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
-        mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
+        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
 
-    private void FixedUpdate()
+    public override void FixedUpdateNetwork()
     {
-        rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+        rb.MovePosition(rb.position + movement * moveSpeed * Runner.DeltaTime);
 
-        Vector2 lookDir = mousePos - rb.position;
+        Vector2 lookDir = -(mousePos - rb.position);
         float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
         rb.rotation = angle;
     }

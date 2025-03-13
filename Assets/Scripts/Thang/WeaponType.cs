@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public enum WeaponType { Pistol, AK47, Shotgun, Grenade }
+public enum WeaponType { Pistol, Rifle, Shotgun, Grenade }
 
 [CreateAssetMenu(fileName = "NewWeapon", menuName = "Weapon System/Weapon")]
 public class WeaponData : ScriptableObject
@@ -8,6 +8,7 @@ public class WeaponData : ScriptableObject
     [Header("Weapon Info")]
     public string weaponName;
     public WeaponType type;
+    [SerializeField] Sprite weaponDisplay;
 
     [Header("Stats")]
     [Range(1f, 100f)] public float damage;
