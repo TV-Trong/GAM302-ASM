@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 1021581238728857877}
   - component: {fileID: 7978359740486547453}
   - component: {fileID: 5235417324865926113}
+  - component: {fileID: 8202283807932710331}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -202,6 +203,7 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 1021581238728857877}
+  - {fileID: 8202283807932710331}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &1021581238728857877
 MonoBehaviour:
@@ -217,7 +219,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   rb: {fileID: 4544510149984936059}
-  cam: {fileID: 0}
 --- !u!114 &7978359740486547453
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -265,6 +266,23 @@ CircleCollider2D:
   m_Offset: {x: 0.31, y: -0.18}
   serializedVersion: 2
   m_Radius: 0.95
+--- !u!114 &8202283807932710331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5076637523551162343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stateAuthorityChangeErrorCorrectionDelta: 0
+  SyncScale: 1
+  SyncParent: 1
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 1
 --- !u!1 &5429651602879381862
 GameObject:
   m_ObjectHideFlags: 0

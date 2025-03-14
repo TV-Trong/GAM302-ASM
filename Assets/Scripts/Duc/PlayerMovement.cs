@@ -14,8 +14,11 @@ public class PlayerMovement : NetworkBehaviour
 
     public override void Spawned()
     {
-        virtualCamera = FindAnyObjectByType<CinemachineVirtualCamera>();
-        virtualCamera.Follow = transform;
+        if (HasStateAuthority)
+        {
+            virtualCamera = FindAnyObjectByType<CinemachineVirtualCamera>();
+            virtualCamera.Follow = transform;
+        }
     }
 
     void Update()
@@ -28,6 +31,9 @@ public class PlayerMovement : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
+        if (!HasStateAuthority)
+            return;
+
         rb.MovePosition(rb.position + movement * moveSpeed * Runner.DeltaTime);
 
         Vector2 lookDir = -(mousePos - rb.position);
