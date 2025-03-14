@@ -15,9 +15,9 @@ MonoBehaviour:
   weaponName: Pistol
   type: 0
   weaponDisplay: {fileID: -743891441, guid: fedc4756c77733a4cb3c0870373af193, type: 3}
-  damage: 10
-  fireRate: 0.1
-  ammoCapacity: 1
-  reloadTime: 0.1
+  damage: 26.5
+  fireRate: 2.29
+  ammoCapacity: 32
+  reloadTime: 0.16832446
   bulletForce: 0.1
   bulletPrefab: {fileID: 3625412812425070808, guid: 48f021185cf1e484f839d575f4f414ec, type: 3}
