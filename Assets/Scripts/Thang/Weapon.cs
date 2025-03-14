@@ -13,11 +13,12 @@ public class Weapon : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             isShooting = true;
-            Shoot();
+            InvokeRepeating("Shoot", 0, weaponData.fireRate);
         }
         if (Input.GetMouseButtonUp(0))
         {
             isShooting = false;
+            CancelInvoke("Shoot");
         }
     }
 
@@ -47,8 +48,8 @@ public class Weapon : MonoBehaviour
         Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 direction = (mouseWorldPosition - firePoint).normalized;
 
-        //Gizmos.color = isShooting ? Color.yellow : Color.blue;
-        //Gizmos.DrawLine(firePoint, firePoint + direction * weaponData.bulletForce);
+        Gizmos.color = isShooting ? Color.yellow : Color.blue;
+        Gizmos.DrawLine(firePoint, firePoint + direction * weaponData.bulletForce);
     }
 
     private IEnumerator MoveTrail(GameObject trail, Vector2 endPoint)

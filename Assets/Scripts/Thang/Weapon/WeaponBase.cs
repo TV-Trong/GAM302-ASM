@@ -9,7 +9,7 @@ public abstract class WeaponBase : ScriptableObject
 
     [Header("Stats")]
     [Range(1f, 100f)] [SerializeField] private float damage;
-    [Range(0.1f, 5f)] [SerializeField] private float fireRate;
+    [Range(0.1f, 5f)] [SerializeField] public float fireRate;
     [Range(1, 100)] [SerializeField] private int ammoCapacity;
     [Range(0.1f, 5f)] [SerializeField] private float reloadTime;
     [Range(0.1f, 100f)] public float bulletForce;
