@@ -9,18 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19c0124aec2725d48a871f5cb4fbcf0e, type: 3}
-  m_Name: Grenade
+  m_Script: {fileID: 11500000, guid: b638957be458819438a17da864eef350, type: 3}
+  m_Name: Rifle
   m_EditorClassIdentifier: 
-  weaponName: Grenade
-  type: 3
-  weaponDisplay: {fileID: -1383921371, guid: fedc4756c77733a4cb3c0870373af193, type: 3}
-  damage: 70
+  weaponName: Rifle
+  type: 1
+  weaponDisplay: {fileID: 728916852, guid: fedc4756c77733a4cb3c0870373af193, type: 3}
+  damage: 15
   fireRate: 0.1
   ammoCapacity: 1
   reloadTime: 0.1
   bulletForce: 0.1
   bulletPrefab: {fileID: 3625412812425070808, guid: 48f021185cf1e484f839d575f4f414ec, type: 3}
-  explosionData:
-    radius: 0
-    delay: 0

@@ -1,70 +1,77 @@
+using System.Collections;
 using UnityEngine;
-using System.Collections; 
 
 public class Weapon : MonoBehaviour
 {
-    public WeaponData weaponData;
-    public Transform firePos;
-    public AudioSource audioSource;
-    public Transform player; // Tham chiếu đến Player để xoay luôn
+    [SerializeField] private GameObject bulletTrailPrefab; // Prefab vệt đạn
+    public float bulletSpeed = 20f;
+    public float bulletRange = 10f;
+    public int bulletDamage = 20;
+    public LayerMask hitLayers;
 
-    private float timeBtwFire;
+    private bool isShooting = false; // Trạng thái bắn
 
     void Update()
     {
-        RotateTowardsMouse();
-        timeBtwFire -= Time.deltaTime;
-
-        if (Input.GetMouseButton(0) && timeBtwFire <= 0)
+        if (Input.GetMouseButtonDown(0))
         {
-            FireBullet();
+            isShooting = true;
+            Shoot();
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            isShooting = false;
         }
     }
 
-    void RotateTowardsMouse()
+    void Shoot()
     {
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 lookDir = mousePos - transform.position;
-        float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg;
+        Vector2 firePoint = transform.position;
+        Vector2 direction = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized;
 
-        // Xoay vũ khí theo chuột
-        transform.rotation = Quaternion.Euler(0, 0, angle);
+        RaycastHit2D hit = Physics2D.Raycast(firePoint, direction, bulletRange, hitLayers);
+        Vector2 targetPoint = hit.collider != null ? hit.point : (firePoint + direction * bulletRange);
 
-        // Xoay Player theo chuột
-        if (player != null)
+        // 🌟 VẼ TIA RAYCAST MÀU VÀNG KHI BẮN
+        Debug.DrawRay(firePoint, direction * bulletRange, Color.yellow, 0.1f);
+
+        // 🏹 Tạo vệt đạn
+        GameObject bulletTrail = Instantiate(bulletTrailPrefab, firePoint, Quaternion.identity);
+        StartCoroutine(MoveTrail(bulletTrail, targetPoint));
+
+        if (hit.collider != null)
         {
-            player.rotation = Quaternion.Euler(0, 0, angle);
+            Debug.Log("Bắn trúng: " + hit.collider.name);
 
-            // Đảo hướng nếu nhân vật quay ngược
-            if (angle > 90 || angle < -90)
-                player.localScale = new Vector3(1, -1, 1);
-            else
-                player.localScale = new Vector3(1, 1, 1);
+            
         }
     }
 
-    void FireBullet()
+    void OnDrawGizmos()
     {
-        if (weaponData == null || weaponData.bulletPrefab == null) return;
+        if (!Application.isPlaying) return;
 
-        timeBtwFire = weaponData.fireRate;
-        GameObject bulletTmp = Instantiate(weaponData.bulletPrefab, firePos.position, transform.rotation);
+        Vector2 firePoint = transform.position;
+        Vector2 direction = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized;
 
-        Rigidbody2D rb = bulletTmp.GetComponent<Rigidbody2D>();
-        rb.AddForce(transform.right * weaponData.bulletForce, ForceMode2D.Impulse);
-
-        // Phát âm thanh bắn súng
-        if (audioSource && weaponData.fireSound)
-            audioSource.PlayOneShot(weaponData.fireSound);
-
-        // Nếu là vũ khí nổ thì kích hoạt hẹn giờ phát nổ
-        if (weaponData.isExplosive)
-            StartCoroutine(ExplodeAfterDelay(bulletTmp, weaponData.explosionData.delay));
+        // 🌟 Hiển thị tia Raycast luôn trong Scene View
+        Gizmos.color = isShooting ? Color.yellow : Color.blue;
+        Gizmos.DrawLine(firePoint, firePoint + direction * bulletRange);
     }
 
-    IEnumerator ExplodeAfterDelay(GameObject bullet, float delay)
+    private IEnumerator MoveTrail(GameObject trail, Vector2 endPoint)
     {
-        yield return new WaitForSeconds(delay);
-        Destroy(bullet);
+        float time = 0f;
+        float duration = Vector2.Distance(trail.transform.position, endPoint) / bulletSpeed;
+
+        while (time < duration)
+        {
+            trail.transform.position = Vector2.Lerp(trail.transform.position, endPoint, time / duration);
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        trail.transform.position = endPoint;
+        Destroy(trail, 0.2f);
     }
 }

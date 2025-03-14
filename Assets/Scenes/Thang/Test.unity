@@ -227,7 +227,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &55738681
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -346,10 +346,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e28ae8cea8a5979499dcb98052fb82a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponData: {fileID: 11400000, guid: f17990f6223e3b14d80433952bd95e28, type: 2}
-  firePos: {fileID: 1758682243}
-  audioSource: {fileID: 0}
-  player: {fileID: 1219147914}
+  bulletTrailPrefab: {fileID: 3625412812425070808, guid: 48f021185cf1e484f839d575f4f414ec, type: 3}
+  bulletSpeed: 20
+  bulletRange: 10
+  bulletDamage: 20
+  hitLayers:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!212 &464616284
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -691,7 +694,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!50 &1376676908
 Rigidbody2D:
   serializedVersion: 4
