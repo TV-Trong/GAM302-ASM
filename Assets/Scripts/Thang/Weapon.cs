@@ -3,47 +3,56 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    [SerializeField] private GameObject bulletTrailPrefab; // Prefab vệt đạn
-    public float bulletSpeed = 20f;
-    public float bulletRange = 10f;
-    public int bulletDamage = 20;
-    public LayerMask hitLayers;
+    [SerializeField] private WeaponBase weaponData; // Tham chiếu đến ScriptableObject
+    [SerializeField] private GameObject bulletTrailPrefab;
+    [SerializeField] private SpriteRenderer weaponSpriteRenderer; // SpriteRenderer để hiển thị súng
 
-    private bool isShooting = false; // Trạng thái bắn
+    public LayerMask hitLayers;
+    private bool isShooting = false;
+
+    void Start()
+    {
+        if (weaponData == null)
+        {
+            Debug.LogWarning("weaponData chưa được gán, cần nhặt vũ khí!");
+        }
+        else
+        {
+            UpdateWeaponSprite(); // Hiển thị hình ảnh súng ban đầu nếu có
+        }
+    }
 
     void Update()
     {
+        if (weaponData == null) return; // Không cho bắn nếu chưa có súng
+
         if (Input.GetMouseButtonDown(0))
         {
             isShooting = true;
-            Shoot();
+            InvokeRepeating("Shoot", 0, weaponData.fireRate);
         }
         if (Input.GetMouseButtonUp(0))
         {
             isShooting = false;
+            CancelInvoke("Shoot");
         }
     }
 
     void Shoot()
     {
         Vector2 firePoint = transform.position;
-        Vector2 direction = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized;
+        Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 direction = (mouseWorldPosition - firePoint).normalized;
 
-        RaycastHit2D hit = Physics2D.Raycast(firePoint, direction, bulletRange, hitLayers);
-        Vector2 targetPoint = hit.collider != null ? hit.point : (firePoint + direction * bulletRange);
+        RaycastHit2D hit = Physics2D.Raycast(firePoint, direction, weaponData.bulletForce, hitLayers);
+        Vector2 targetPoint = hit.collider != null ? hit.point : (firePoint + direction * weaponData.bulletForce);
 
-        // 🌟 VẼ TIA RAYCAST MÀU VÀNG KHI BẮN
-        Debug.DrawRay(firePoint, direction * bulletRange, Color.yellow, 0.1f);
-
-        // 🏹 Tạo vệt đạn
         GameObject bulletTrail = Instantiate(bulletTrailPrefab, firePoint, Quaternion.identity);
         StartCoroutine(MoveTrail(bulletTrail, targetPoint));
 
         if (hit.collider != null)
         {
             Debug.Log("Bắn trúng: " + hit.collider.name);
-
-            
         }
     }
 
@@ -52,17 +61,17 @@ public class Weapon : MonoBehaviour
         if (!Application.isPlaying) return;
 
         Vector2 firePoint = transform.position;
-        Vector2 direction = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized;
+        Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 direction = (mouseWorldPosition - firePoint).normalized;
 
-        // 🌟 Hiển thị tia Raycast luôn trong Scene View
         Gizmos.color = isShooting ? Color.yellow : Color.blue;
-        Gizmos.DrawLine(firePoint, firePoint + direction * bulletRange);
+        Gizmos.DrawLine(firePoint, firePoint + direction * weaponData.bulletForce);
     }
 
     private IEnumerator MoveTrail(GameObject trail, Vector2 endPoint)
     {
         float time = 0f;
-        float duration = Vector2.Distance(trail.transform.position, endPoint) / bulletSpeed;
+        float duration = Vector2.Distance(trail.transform.position, endPoint) / weaponData.bulletForce;
 
         while (time < duration)
         {
@@ -73,5 +82,24 @@ public class Weapon : MonoBehaviour
 
         trail.transform.position = endPoint;
         Destroy(trail, 0.2f);
+    }
+
+    public void SetWeapon(WeaponBase newWeapon)
+    {
+        weaponData = newWeapon;
+        UpdateWeaponSprite();
+        Debug.Log("Trang bị vũ khí: " + weaponData.name);
+    }
+
+    private void UpdateWeaponSprite()
+    {
+        if (weaponSpriteRenderer != null && weaponData.weaponDisplay != null)
+        {
+            weaponSpriteRenderer.sprite = weaponData.weaponDisplay;
+        }
+        else
+        {
+            Debug.LogWarning("WeaponSpriteRenderer hoặc weaponDisplay chưa được gán!");
+        }
     }
 }

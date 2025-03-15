@@ -5,13 +5,13 @@ public abstract class WeaponBase : ScriptableObject
     [Header("Weapon Info")]
     [SerializeField] private string weaponName;
     [SerializeField] private WeaponType type;
-    [SerializeField] protected Sprite weaponDisplay;
+    [SerializeField] public Sprite weaponDisplay;
 
     [Header("Stats")]
-    [Range(1f, 100f)] public float damage;
-    [Range(0.1f, 5f)] public float fireRate;
-    [Range(1, 100)] public int ammoCapacity;
-    [Range(0.1f, 5f)] public float reloadTime;
+    [Range(1f, 100f)] [SerializeField] private float damage;
+    [Range(0.1f, 5f)] [SerializeField] public float fireRate;
+    [Range(1, 100)] [SerializeField] private int ammoCapacity;
+    [Range(0.1f, 5f)] [SerializeField] private float reloadTime;
     [Range(0.1f, 100f)] public float bulletForce;
 
     [Header("Bullet")]
