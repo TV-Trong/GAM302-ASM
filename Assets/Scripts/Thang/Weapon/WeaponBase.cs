@@ -5,7 +5,7 @@ public abstract class WeaponBase : ScriptableObject
     [Header("Weapon Info")]
     [SerializeField] private string weaponName;
     [SerializeField] private WeaponType type;
-    [SerializeField] protected Sprite weaponDisplay;
+    [SerializeField] public Sprite weaponDisplay;
 
     [Header("Stats")]
     [Range(1f, 100f)] [SerializeField] private float damage;

@@ -5,11 +5,27 @@ public class Weapon : MonoBehaviour
 {
     [SerializeField] private WeaponBase weaponData; // Tham chiếu đến ScriptableObject
     [SerializeField] private GameObject bulletTrailPrefab;
+    [SerializeField] private SpriteRenderer weaponSpriteRenderer; // SpriteRenderer để hiển thị súng
+
     public LayerMask hitLayers;
     private bool isShooting = false;
 
+    void Start()
+    {
+        if (weaponData == null)
+        {
+            Debug.LogWarning("weaponData chưa được gán, cần nhặt vũ khí!");
+        }
+        else
+        {
+            UpdateWeaponSprite(); // Hiển thị hình ảnh súng ban đầu nếu có
+        }
+    }
+
     void Update()
     {
+        if (weaponData == null) return; // Không cho bắn nếu chưa có súng
+
         if (Input.GetMouseButtonDown(0))
         {
             isShooting = true;
@@ -66,5 +82,24 @@ public class Weapon : MonoBehaviour
 
         trail.transform.position = endPoint;
         Destroy(trail, 0.2f);
+    }
+
+    public void SetWeapon(WeaponBase newWeapon)
+    {
+        weaponData = newWeapon;
+        UpdateWeaponSprite();
+        Debug.Log("Trang bị vũ khí: " + weaponData.name);
+    }
+
+    private void UpdateWeaponSprite()
+    {
+        if (weaponSpriteRenderer != null && weaponData.weaponDisplay != null)
+        {
+            weaponSpriteRenderer.sprite = weaponData.weaponDisplay;
+        }
+        else
+        {
+            Debug.LogWarning("WeaponSpriteRenderer hoặc weaponDisplay chưa được gán!");
+        }
     }
 }
