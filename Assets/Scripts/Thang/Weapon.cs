@@ -1,13 +1,14 @@
 using System.Collections;
+using Fusion;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+public class Weapon : /*NetworkBehaviour*/ MonoBehaviour
 {
     [SerializeField] private WeaponBase weaponData; // Tham chiếu đến ScriptableObject
     [SerializeField] private GameObject bulletTrailPrefab;
     [SerializeField] private SpriteRenderer weaponSpriteRenderer; // SpriteRenderer để hiển thị súng
 
-    public LayerMask hitLayers;
+    //public LayerMask hitLayers;
     private bool isShooting = false;
 
     void Start()
@@ -22,9 +23,10 @@ public class Weapon : MonoBehaviour
         }
     }
 
+    //public override void FixedUpdateNetwork()
     void Update()
     {
-        if (weaponData == null) return; // Không cho bắn nếu chưa có súng
+        if (/*!HasStateAuthority ||*/ weaponData == null) return; // Không cho bắn nếu chưa có súng
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -44,10 +46,13 @@ public class Weapon : MonoBehaviour
         Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 direction = (mouseWorldPosition - firePoint).normalized;
 
-        RaycastHit2D hit = Physics2D.Raycast(firePoint, direction, weaponData.bulletForce, hitLayers);
+        RaycastHit2D hit = Physics2D.Raycast(firePoint, direction, weaponData.bulletForce/*, hitLayers*/);
         Vector2 targetPoint = hit.collider != null ? hit.point : (firePoint + direction * weaponData.bulletForce);
 
         GameObject bulletTrail = Instantiate(bulletTrailPrefab, firePoint, Quaternion.identity);
+
+        //NetworkObject bulletTrail = Runner.Spawn(bulletTrailPrefab, firePoint, Quaternion.identity);
+
         StartCoroutine(MoveTrail(bulletTrail, targetPoint));
 
         if (hit.collider != null)
@@ -58,17 +63,17 @@ public class Weapon : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        if (!Application.isPlaying) return;
+        //if (!Application.isPlaying) return;
 
-        Vector2 firePoint = transform.position;
-        Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 direction = (mouseWorldPosition - firePoint).normalized;
+        //Vector2 firePoint = transform.position;
+        //Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //Vector2 direction = (mouseWorldPosition - firePoint).normalized;
 
-        Gizmos.color = isShooting ? Color.yellow : Color.blue;
-        Gizmos.DrawLine(firePoint, firePoint + direction * weaponData.bulletForce);
+        //Gizmos.color = isShooting ? Color.yellow : Color.blue;
+        //Gizmos.DrawLine(firePoint, firePoint + direction * weaponData.bulletForce);
     }
 
-    private IEnumerator MoveTrail(GameObject trail, Vector2 endPoint)
+    private IEnumerator MoveTrail(/*NetworkObject*/ GameObject trail, Vector2 endPoint)
     {
         float time = 0f;
         float duration = Vector2.Distance(trail.transform.position, endPoint) / weaponData.bulletForce;
