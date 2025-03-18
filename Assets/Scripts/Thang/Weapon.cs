@@ -28,12 +28,21 @@ public class Weapon : /*NetworkBehaviour*/ MonoBehaviour
     {
         if (/*!HasStateAuthority ||*/ weaponData == null) return; // Không cho bắn nếu chưa có súng
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0)) 
         {
             isShooting = true;
-            InvokeRepeating("Shoot", 0, weaponData.fireRate);
+
+            if (weaponData.isShotgun)
+            {
+                ShootShotgun();
+            }
+            else
+            {
+                InvokeRepeating("Shoot", 0, weaponData.fireRate); // Nếu không, bắn như súng thường
+            }
         }
-        if (Input.GetMouseButtonUp(0))
+
+        if (Input.GetMouseButtonUp(0)) 
         {
             isShooting = false;
             CancelInvoke("Shoot");
@@ -58,6 +67,34 @@ public class Weapon : /*NetworkBehaviour*/ MonoBehaviour
         if (hit.collider != null)
         {
             Debug.Log("Bắn trúng: " + hit.collider.name);
+        }
+    }
+
+    void ShootShotgun()
+    {
+        Vector2 firePoint = transform.position;
+        Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 direction = (mouseWorldPosition - firePoint).normalized;
+
+        int pelletCount = weaponData.GetPelletCount();
+        float spreadAngle = weaponData.GetSpreadAngle();
+        float halfSpread = (pelletCount - 1) / 2f;
+
+        for (int i = 0; i < pelletCount; i++)
+        {
+            float angleOffset = (i - halfSpread) * spreadAngle;
+            Vector2 spreadDirection = Quaternion.Euler(0, 0, angleOffset) * direction;
+
+            RaycastHit2D hit = Physics2D.Raycast(firePoint, spreadDirection, weaponData.bulletForce);
+            Vector2 targetPoint = hit.collider != null ? hit.point : (firePoint + spreadDirection * weaponData.bulletForce);
+
+            GameObject bulletTrail = Instantiate(bulletTrailPrefab, firePoint, Quaternion.identity);
+            StartCoroutine(MoveTrail(bulletTrail, targetPoint));
+
+            if (hit.collider != null)
+            {
+                Debug.Log("Shotgun trúng: " + hit.collider.name);
+            }
         }
     }
 
