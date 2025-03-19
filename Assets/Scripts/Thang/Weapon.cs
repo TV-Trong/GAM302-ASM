@@ -124,7 +124,15 @@ public class Weapon : NetworkBehaviour
         }
 
         trail.transform.position = endPoint;
-        Destroy(trail, 0.2f);
+
+        yield return new WaitForSeconds(0.2f);
+        DespawnTrail(trail);
+    }
+
+    void DespawnTrail(NetworkObject trail)
+    {
+
+        Runner.Despawn(trail);
     }
 
     public void SetWeapon(WeaponBase newWeapon)
