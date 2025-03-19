@@ -203,6 +203,7 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 1021581238728857877}
   - {fileID: 8202283807932710331}
+  - {fileID: 6368910362569652155}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &1021581238728857877
 MonoBehaviour:
@@ -736,6 +737,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e28ae8cea8a5979499dcb98052fb82a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponData: {fileID: 11400000, guid: 7a535cb95e32acb418ac81559f43206d, type: 2}
+  weaponData: {fileID: 11400000, guid: e0d9b2f55f49a4d408dd71f30ba797b2, type: 2}
   bulletTrailPrefab: {fileID: 3625412812425070808, guid: 48f021185cf1e484f839d575f4f414ec, type: 3}
   weaponSpriteRenderer: {fileID: 3179981444828230001}

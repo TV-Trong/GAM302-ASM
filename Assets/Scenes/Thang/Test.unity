@@ -240,12 +240,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e28ae8cea8a5979499dcb98052fb82a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponData: {fileID: 0}
+  weaponData: {fileID: 11400000, guid: 26d24265a1908bd4d9752b833c161a40, type: 2}
   bulletTrailPrefab: {fileID: 3625412812425070808, guid: 48f021185cf1e484f839d575f4f414ec, type: 3}
   weaponSpriteRenderer: {fileID: 464616284}
-  hitLayers:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!212 &464616284
 SpriteRenderer:
   m_ObjectHideFlags: 0

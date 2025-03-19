@@ -2,7 +2,7 @@ using System.Collections;
 using Fusion;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+public class Weapon : NetworkBehaviour
 {
     [SerializeField] private WeaponBase weaponData; // Tham chiếu đến ScriptableObject
     [SerializeField] private GameObject bulletTrailPrefab;
@@ -26,7 +26,7 @@ public class Weapon : MonoBehaviour
     //public override void FixedUpdateNetwork()
     void Update()
     {
-        if (/*!HasStateAuthority ||*/ weaponData == null) return; // Không cho bắn nếu chưa có súng
+        if (!HasStateAuthority || weaponData == null) return; // Không cho bắn nếu chưa có súng
 
         if (Input.GetMouseButtonDown(0)) 
         {
@@ -58,9 +58,9 @@ public class Weapon : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(firePoint, direction, weaponData.bulletForce/*, hitLayers*/);
         Vector2 targetPoint = hit.collider != null ? hit.point : (firePoint + direction * weaponData.bulletForce);
 
-        GameObject bulletTrail = Instantiate(bulletTrailPrefab, firePoint, Quaternion.identity);
+        //GameObject bulletTrail = Instantiate(bulletTrailPrefab, firePoint, Quaternion.identity);
 
-        //NetworkObject bulletTrail = Runner.Spawn(bulletTrailPrefab, firePoint, Quaternion.identity);
+        NetworkObject bulletTrail = Runner.Spawn(bulletTrailPrefab, firePoint, Quaternion.identity);
 
         StartCoroutine(MoveTrail(bulletTrail, targetPoint));
 
@@ -88,8 +88,7 @@ public class Weapon : MonoBehaviour
             RaycastHit2D hit = Physics2D.Raycast(firePoint, spreadDirection, weaponData.bulletForce);
             Vector2 targetPoint = hit.collider != null ? hit.point : (firePoint + spreadDirection * weaponData.bulletForce);
 
-            //NetworkObject bulletTrail = Runner.Spawn(bulletTrailPrefab, firePoint, Quaternion.identity);
-            GameObject bulletTrail = Instantiate(bulletTrailPrefab, firePoint, Quaternion.identity);
+            NetworkObject bulletTrail = Runner.Spawn(bulletTrailPrefab, firePoint, Quaternion.identity);
 
             StartCoroutine(MoveTrail(bulletTrail, targetPoint));
 
@@ -112,7 +111,7 @@ public class Weapon : MonoBehaviour
         //Gizmos.DrawLine(firePoint, firePoint + direction * weaponData.bulletForce);
     }
 
-    private IEnumerator MoveTrail(GameObject trail, Vector2 endPoint)
+    private IEnumerator MoveTrail(NetworkObject trail, Vector2 endPoint)
     {
         float time = 0f;
         float duration = Vector2.Distance(trail.transform.position, endPoint) / weaponData.bulletForce;
