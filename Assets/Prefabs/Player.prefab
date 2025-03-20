@@ -248,7 +248,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 3}
+  m_AnchoredPosition: {x: 0, y: 3.5}
   m_SizeDelta: {x: 10, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8490089594645463920
@@ -482,6 +482,7 @@ GameObject:
   - component: {fileID: 1021581238728857877}
   - component: {fileID: 5235417324865926113}
   - component: {fileID: 8202283807932710331}
+  - component: {fileID: 8183991009655769841}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -552,6 +553,8 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 1021581238728857877}
   - {fileID: 8202283807932710331}
+  - {fileID: 8183991009655769841}
+  - {fileID: 7810957496086994740}
   - {fileID: 6368910362569652155}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &1021581238728857877
@@ -568,6 +571,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   rb: {fileID: 4544510149984936059}
+  displaySpriteObject: {fileID: 5429651602879381862}
 --- !u!58 &5235417324865926113
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -616,10 +620,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stateAuthorityChangeErrorCorrectionDelta: 0
-  SyncScale: 1
-  SyncParent: 1
+  SyncScale: 0
+  SyncParent: 0
   _autoAOIOverride: 1
   DisableSharedModeInterpolation: 1
+--- !u!114 &8183991009655769841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5076637523551162343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00ed6322e02c71345b4e85c50ac2d161, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerName: {fileID: 6890437418426079457}
+  HPSlider: {fileID: 4894096113862016975}
+  _CurrentHP: 0
+  _PlayerName: 
 --- !u!1 &5311580709747848325
 GameObject:
   m_ObjectHideFlags: 0
@@ -704,6 +724,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3638827906227956086}
+  - component: {fileID: 7810957496086994740}
   m_Layer: 0
   m_Name: Display
   m_TagString: Untagged
@@ -728,6 +749,23 @@ Transform:
   - {fileID: 7397556167667884769}
   m_Father: {fileID: 7569144172436098925}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7810957496086994740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5429651602879381862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stateAuthorityChangeErrorCorrectionDelta: 0
+  SyncScale: 0
+  SyncParent: 0
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 1
 --- !u!1 &6231432390109642593
 GameObject:
   m_ObjectHideFlags: 0
@@ -1015,7 +1053,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 1.94}
+  m_AnchoredPosition: {x: 0, y: 2.8}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4894096113862016975

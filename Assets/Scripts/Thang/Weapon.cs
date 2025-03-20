@@ -64,10 +64,10 @@ public class Weapon : NetworkBehaviour
 
         StartCoroutine(MoveTrail(bulletTrail, targetPoint));
 
-        if (hit.collider != null)
-        {
-            Debug.Log("Bắn trúng: " + hit.collider.name);
-        }
+        //if (hit.collider != null)
+        //{
+        //    Debug.Log("Bắn trúng: " + hit.collider.name);
+        //}
     }
 
     void ShootShotgun()
@@ -92,10 +92,10 @@ public class Weapon : NetworkBehaviour
 
             StartCoroutine(MoveTrail(bulletTrail, targetPoint));
 
-            if (hit.collider != null)
-            {
-                Debug.Log("Shotgun trúng: " + hit.collider.name);
-            }
+            //if (hit.collider != null)
+            //{
+            //    Debug.Log("Shotgun trúng: " + hit.collider.name);
+            //}
         }
     }
 
