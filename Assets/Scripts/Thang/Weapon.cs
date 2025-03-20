@@ -7,9 +7,8 @@ public class Weapon : NetworkBehaviour
     [SerializeField] private WeaponBase weaponData; // Tham chiếu đến ScriptableObject
     [SerializeField] private GameObject bulletTrailPrefab;
     [SerializeField] private SpriteRenderer weaponSpriteRenderer; // SpriteRenderer để hiển thị súng
-
-    //public LayerMask hitLayers;
-    private bool isShooting = false;
+    [SerializeField] Transform playerTransform;
+    [SerializeField] Transform firePoint;
 
     void Start()
     {
@@ -23,18 +22,15 @@ public class Weapon : NetworkBehaviour
         }
     }
 
-    //public override void FixedUpdateNetwork()
     void Update()
     {
         if (!HasStateAuthority || weaponData == null) return; // Không cho bắn nếu chưa có súng
 
         if (Input.GetMouseButtonDown(0)) 
         {
-            isShooting = true;
-
             if (weaponData.isShotgun)
             {
-                ShootShotgun();
+                InvokeRepeating("ShootShotgun", 0, weaponData.fireRate);
             }
             else
             {
@@ -44,37 +40,43 @@ public class Weapon : NetworkBehaviour
 
         if (Input.GetMouseButtonUp(0)) 
         {
-            isShooting = false;
             CancelInvoke("Shoot");
+            CancelInvoke("ShootShotgun");
         }
     }
 
     void Shoot()
     {
-        Vector2 firePoint = transform.position;
         Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 direction = (mouseWorldPosition - firePoint).normalized;
+        Vector2 direction = (mouseWorldPosition - (Vector2)playerTransform.position).normalized;
 
-        RaycastHit2D hit = Physics2D.Raycast(firePoint, direction, weaponData.bulletForce/*, hitLayers*/);
-        Vector2 targetPoint = hit.collider != null ? hit.point : (firePoint + direction * weaponData.bulletForce);
+        RaycastHit2D hit = Physics2D.Raycast((Vector2)firePoint.position, direction, weaponData.bulletForce);
 
-        //GameObject bulletTrail = Instantiate(bulletTrailPrefab, firePoint, Quaternion.identity);
+        Vector2 targetPoint = hit.collider != null ? hit.point : ((Vector2)firePoint.position + direction * weaponData.bulletForce);
 
-        NetworkObject bulletTrail = Runner.Spawn(bulletTrailPrefab, firePoint, Quaternion.identity);
+        NetworkObject bulletTrail = Runner.Spawn(bulletTrailPrefab, (Vector2)firePoint.position, Quaternion.identity);
 
         StartCoroutine(MoveTrail(bulletTrail, targetPoint));
 
-        //if (hit.collider != null)
-        //{
-        //    Debug.Log("Bắn trúng: " + hit.collider.name);
-        //}
+        if (hit.collider != null)
+        {
+            HitPlayer(hit);
+        }
+    }
+
+    private void HitPlayer(RaycastHit2D hit)
+    {
+        if (hit.transform.CompareTag("Player") && hit.transform != transform.root)
+        {
+            hit.transform.GetComponent<PlayerNetworkProperties>().TakeDamageRpc(10);
+            Debug.Log("Damage enemy");
+        }
     }
 
     void ShootShotgun()
     {
-        Vector2 firePoint = transform.position;
         Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 direction = (mouseWorldPosition - firePoint).normalized;
+        Vector2 direction = (mouseWorldPosition - (Vector2)playerTransform.position).normalized;
 
         int pelletCount = weaponData.GetPelletCount();
         float spreadAngle = weaponData.GetSpreadAngle();
@@ -85,30 +87,18 @@ public class Weapon : NetworkBehaviour
             float angleOffset = (i - halfSpread) * spreadAngle;
             Vector2 spreadDirection = Quaternion.Euler(0, 0, angleOffset) * direction;
 
-            RaycastHit2D hit = Physics2D.Raycast(firePoint, spreadDirection, weaponData.bulletForce);
-            Vector2 targetPoint = hit.collider != null ? hit.point : (firePoint + spreadDirection * weaponData.bulletForce);
+            RaycastHit2D hit = Physics2D.Raycast((Vector2)firePoint.position, spreadDirection, weaponData.bulletForce);
+            Vector2 targetPoint = hit.collider != null ? hit.point : ((Vector2)firePoint.position + spreadDirection * weaponData.bulletForce);
 
-            NetworkObject bulletTrail = Runner.Spawn(bulletTrailPrefab, firePoint, Quaternion.identity);
+            NetworkObject bulletTrail = Runner.Spawn(bulletTrailPrefab, (Vector2)firePoint.position, Quaternion.identity);
 
             StartCoroutine(MoveTrail(bulletTrail, targetPoint));
 
-            //if (hit.collider != null)
-            //{
-            //    Debug.Log("Shotgun trúng: " + hit.collider.name);
-            //}
+            if (hit.collider != null)
+            {
+                HitPlayer(hit);
+            }
         }
-    }
-
-    void OnDrawGizmos()
-    {
-        //if (!Application.isPlaying) return;
-
-        //Vector2 firePoint = transform.position;
-        //Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //Vector2 direction = (mouseWorldPosition - firePoint).normalized;
-
-        //Gizmos.color = isShooting ? Color.yellow : Color.blue;
-        //Gizmos.DrawLine(firePoint, firePoint + direction * weaponData.bulletForce);
     }
 
     private IEnumerator MoveTrail(NetworkObject trail, Vector2 endPoint)
