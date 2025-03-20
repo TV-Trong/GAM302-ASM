@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class PlayerNetworkProperties : NetworkBehaviour
 {
-    [SerializeField] TextMeshProUGUI playerName;
+    TextMeshProUGUI playerName;
     Slider HPSlider;
 
     public float BaseHP { get; set; }
@@ -15,7 +15,7 @@ public class PlayerNetworkProperties : NetworkBehaviour
     [HideInInspector]
     public float CurrentHP { get; set; }
 
-    [Networked, OnChangedRender(nameof(OnNameChange))]
+    [Networked]
     [HideInInspector]
     public string PlayerName { get; set; }
 
@@ -23,39 +23,35 @@ public class PlayerNetworkProperties : NetworkBehaviour
     {
         if (HasStateAuthority && Input.GetKeyDown(KeyCode.Space))
         {
-            PlayerName = PlayerPrefs.GetString("LocalName");
-            TakeDamage(10);
-            Debug.Log(CurrentHP);
+            TakeDamageRpc(10);
         }
     }
 
     public override void Spawned()
     {
-        if (HasStateAuthority)
-            SetupProperties(PlayerPrefs.GetString("LocalName"), 100f);
-
+        playerName = GetComponentInChildren<TextMeshProUGUI>();
         HPSlider = GetComponentInChildren<Slider>();
+
+        if (HasStateAuthority) 
+            SetupPropertiesRpc(PlayerPrefs.GetString("LocalName"), 100f);
     }
 
-    public void SetupProperties(string _name, float _baseHP)
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void SetupPropertiesRpc(string _name, float _baseHP)
     {
         PlayerName = _name;
         BaseHP = CurrentHP = _baseHP;
         playerName.text = PlayerName;
     }
 
-    void OnNameChange()
-    {
-        playerName.text = PlayerName;
-    }
-
-    public void TakeDamage(float damage)
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void TakeDamageRpc(float damage)
     {
         CurrentHP -= damage;
     }
 
     void OnTakingDamage()
-    {
+    { 
         HPSlider.value = CurrentHP / BaseHP;
     }
 }

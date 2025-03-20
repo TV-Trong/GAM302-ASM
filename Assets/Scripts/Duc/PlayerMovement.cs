@@ -12,8 +12,7 @@ public class PlayerMovement : NetworkBehaviour
     Vector2 movement;
     Vector2 mousePos;
 
-    [SerializeField] GameObject displaySpriteObject;
-
+    [SerializeField] GameObject playerUI;
     public override void Spawned()
     {
         if (HasStateAuthority)
@@ -41,6 +40,11 @@ public class PlayerMovement : NetworkBehaviour
         Vector2 lookDir = -(mousePos - rb.position);
         float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
 
-        displaySpriteObject.transform.rotation = Quaternion.Euler(0f, 0f, angle);
+        rb.rotation = angle;
+    }
+
+    public override void Render()
+    {
+        playerUI.transform.forward = Camera.main.transform.forward;
     }
 }
