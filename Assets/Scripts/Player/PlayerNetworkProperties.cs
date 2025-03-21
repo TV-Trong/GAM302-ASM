@@ -32,7 +32,7 @@ public class PlayerNetworkProperties : NetworkBehaviour
         playerName = GetComponentInChildren<TextMeshProUGUI>();
         HPSlider = GetComponentInChildren<Slider>();
 
-        if (HasStateAuthority) 
+        //if (HasStateAuthority) 
             SetupPropertiesRpc(PlayerPrefs.GetString("LocalName"), 100f);
     }
 
