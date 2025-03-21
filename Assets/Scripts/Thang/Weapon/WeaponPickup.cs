@@ -2,14 +2,29 @@ using UnityEngine;
 
 public class WeaponPickup : MonoBehaviour
 {
-    public WeaponBase weapon; // Tham chiếu đến ScriptableObject vũ khí
+    public WeaponBase weaponData; // Dữ liệu vũ khí từ ScriptableObject
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player")) // Chỉ cho phép Player nhặt
+        Debug.Log($"Chạm vào: {other.name}");
+
+        PlayerInventory playerInventory = other.GetComponent<PlayerInventory>();
+
+        if (playerInventory == null)
         {
-            Debug.Log("Nhặt được vũ khí: " + weapon.name);
-            Destroy(gameObject); // Xóa GameObject vũ khí sau khi nhặt
+            Debug.LogError("Player không có PlayerInventory!");
+            return;
         }
+
+        if (weaponData == null)
+        {
+            Debug.LogError("WeaponBase chưa được gán vào WeaponPickup!");
+            return;
+        }
+
+        Debug.Log($"Nhặt vũ khí: {weaponData.name}");
+
+        playerInventory.PickUpWeapon(weaponData);
+        Destroy(gameObject);
     }
 }

@@ -16,7 +16,7 @@ public class PickUp : MonoBehaviour
             return;
         }
 
-        if (weaponPickup.weapon == null)
+        /*if (weaponPickup.weapon == null)
         {
             Debug.LogError("Vũ khí trong WeaponPickup chưa được gán!");
             return;
@@ -30,6 +30,6 @@ public class PickUp : MonoBehaviour
 
         Debug.Log("Nhặt vũ khí: " + weaponPickup.weapon.name);
         weaponScript.SetWeapon(weaponPickup.weapon);
-        Destroy(other.gameObject);
+        Destroy(other.gameObject);*/
     }
 }

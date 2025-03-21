@@ -4,58 +4,64 @@ using UnityEngine;
 
 public class Weapon : NetworkBehaviour
 {
-    [SerializeField] private WeaponBase weaponData; // Tham chiếu đến ScriptableObject
-    [SerializeField] private GameObject bulletTrailPrefab;
-    [SerializeField] private SpriteRenderer weaponSpriteRenderer; // SpriteRenderer để hiển thị súng
-    [SerializeField] Transform playerTransform;
-    [SerializeField] Transform firePoint;
+    [SerializeField] public WeaponBase weaponData; // Dữ liệu vũ khí từ ScriptableObject
+    [SerializeField] private GameObject bulletTrailPrefab; // Hiệu ứng đường đạn
+    [SerializeField] private SpriteRenderer weaponSpriteRenderer; // Hình ảnh súng
+    [SerializeField] private Transform playerTransform; // Vị trí người chơi
+    [SerializeField] private Transform firePoint; // Điểm bắn đạn
+
+    private bool canShoot = false;
 
     void Start()
     {
         if (weaponData == null)
         {
-            Debug.LogWarning("weaponData chưa được gán, cần nhặt vũ khí!");
+            Debug.LogWarning("Chưa có vũ khí! Cần nhặt vũ khí trước khi bắn.");
+            canShoot = false;
         }
         else
         {
-            UpdateWeaponSprite(); // Hiển thị hình ảnh súng ban đầu nếu có
+            UpdateWeaponSprite();
+            canShoot = true;
+            weaponData.currentAmmo = weaponData.maxAmmo; // Reset lại số đạn khi khởi tạo
         }
     }
 
     void Update()
     {
-        if (!HasStateAuthority || weaponData == null) return; // Không cho bắn nếu chưa có súng
+        if (!HasStateAuthority || !canShoot || weaponData == null) return;
 
-        if (Input.GetMouseButtonDown(0)) 
+        if (Input.GetMouseButtonDown(0))
         {
-            if (weaponData.isShotgun)
-            {
-                InvokeRepeating("ShootShotgun", 0, weaponData.fireRate);
-            }
-            else
-            {
-                InvokeRepeating("Shoot", 0, weaponData.fireRate); // Nếu không, bắn như súng thường
-            }
-        }
+            PlayerInventory inventory = FindObjectOfType<PlayerInventory>();
 
-        if (Input.GetMouseButtonUp(0)) 
-        {
-            CancelInvoke("Shoot");
-            CancelInvoke("ShootShotgun");
+            if (weaponData.isInfiniteAmmo || weaponData.currentAmmo > 0)
+            {
+                inventory.UseAmmo(weaponData);
+
+                if (weaponData.isShotgun)
+                {
+                    ShootShotgun();
+                }
+                else
+                {
+                    Shoot();
+                }
+            }
         }
     }
 
     void Shoot()
     {
-        Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 direction = (mouseWorldPosition - (Vector2)playerTransform.position).normalized;
+        if (weaponData.currentAmmo <= 0 && !weaponData.isInfiniteAmmo) return;
 
-        RaycastHit2D hit = Physics2D.Raycast((Vector2)firePoint.position, direction, weaponData.bulletForce);
+        Vector2 mouseWorldPosition = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 direction = (mouseWorldPosition - (Vector2)firePoint.position).normalized;
 
-        Vector2 targetPoint = hit.collider != null ? hit.point : ((Vector2)firePoint.position + direction * weaponData.bulletForce);
+        RaycastHit2D hit = Physics2D.Raycast(firePoint.position, direction, weaponData.bulletForce);
+        Vector2 targetPoint = hit.collider != null ? hit.point : (Vector2)firePoint.position + direction * weaponData.bulletForce;
 
-        NetworkObject bulletTrail = Runner.Spawn(bulletTrailPrefab, (Vector2)firePoint.position, Quaternion.identity);
-
+        NetworkObject bulletTrail = Runner.Spawn(bulletTrailPrefab, firePoint.position, Quaternion.identity);
         StartCoroutine(MoveTrail(bulletTrail, targetPoint));
 
         if (hit.collider != null)
@@ -64,18 +70,12 @@ public class Weapon : NetworkBehaviour
         }
     }
 
-    private void HitPlayer(RaycastHit2D hit)
-    {
-        if (hit.transform.CompareTag("Player") && hit.transform != transform.root)
-        {
-            hit.transform.GetComponent<PlayerNetworkProperties>().TakeDamageRpc(10);
-        }
-    }
-
     void ShootShotgun()
     {
-        Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 direction = (mouseWorldPosition - (Vector2)playerTransform.position).normalized;
+        if (weaponData.currentAmmo <= 0 && !weaponData.isInfiniteAmmo) return;
+
+        Vector2 mouseWorldPosition = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 direction = (mouseWorldPosition - (Vector2)firePoint.position).normalized;
 
         int pelletCount = weaponData.GetPelletCount();
         float spreadAngle = weaponData.GetSpreadAngle();
@@ -86,17 +86,24 @@ public class Weapon : NetworkBehaviour
             float angleOffset = (i - halfSpread) * spreadAngle;
             Vector2 spreadDirection = Quaternion.Euler(0, 0, angleOffset) * direction;
 
-            RaycastHit2D hit = Physics2D.Raycast((Vector2)firePoint.position, spreadDirection, weaponData.bulletForce);
-            Vector2 targetPoint = hit.collider != null ? hit.point : ((Vector2)firePoint.position + spreadDirection * weaponData.bulletForce);
+            RaycastHit2D hit = Physics2D.Raycast(firePoint.position, spreadDirection, weaponData.bulletForce);
+            Vector2 targetPoint = hit.collider != null ? hit.point : (Vector2)firePoint.position + spreadDirection * weaponData.bulletForce;
 
-            NetworkObject bulletTrail = Runner.Spawn(bulletTrailPrefab, (Vector2)firePoint.position, Quaternion.identity);
-
+            NetworkObject bulletTrail = Runner.Spawn(bulletTrailPrefab, firePoint.position, Quaternion.identity);
             StartCoroutine(MoveTrail(bulletTrail, targetPoint));
 
             if (hit.collider != null)
             {
                 HitPlayer(hit);
             }
+        }
+    }
+
+    private void HitPlayer(RaycastHit2D hit)
+    {
+        if (hit.transform.CompareTag("Player") && hit.transform != transform.root)
+        {
+            hit.transform.GetComponent<PlayerNetworkProperties>().TakeDamageRpc(weaponData.damage);
         }
     }
 
@@ -120,7 +127,6 @@ public class Weapon : NetworkBehaviour
 
     void DespawnTrail(NetworkObject trail)
     {
-
         Runner.Despawn(trail);
     }
 
@@ -128,7 +134,14 @@ public class Weapon : NetworkBehaviour
     {
         weaponData = newWeapon;
         UpdateWeaponSprite();
-        Debug.Log("Trang bị vũ khí: " + weaponData.name);
+        canShoot = true;
+        Debug.Log($"Trang bị vũ khí: {weaponData.name}");
+    }
+
+    public void SetWeaponActive(bool active)
+    {
+        canShoot = active;
+        weaponSpriteRenderer.enabled = active;
     }
 
     private void UpdateWeaponSprite()

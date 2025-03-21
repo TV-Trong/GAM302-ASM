@@ -243,6 +243,8 @@ MonoBehaviour:
   weaponData: {fileID: 11400000, guid: 26d24265a1908bd4d9752b833c161a40, type: 2}
   bulletTrailPrefab: {fileID: 3625412812425070808, guid: 48f021185cf1e484f839d575f4f414ec, type: 3}
   weaponSpriteRenderer: {fileID: 464616284}
+  playerTransform: {fileID: 1219147914}
+  firePoint: {fileID: 1758682243}
 --- !u!212 &464616284
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -450,8 +452,8 @@ GameObject:
   - component: {fileID: 1219147913}
   - component: {fileID: 1219147915}
   - component: {fileID: 1219147916}
-  - component: {fileID: 1219147918}
   - component: {fileID: 1219147917}
+  - component: {fileID: 1219147918}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -612,10 +614,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1219147911}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a1c27da1e8f02140b06528fa2ab9274, type: 3}
+  m_Script: {fileID: 11500000, guid: bc7a1201b4d9d834c8ef8a5c261eebbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponScript: {fileID: 464616283}
+  WeaponSlot:
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &1376676907
 GameObject:
   m_ObjectHideFlags: 0

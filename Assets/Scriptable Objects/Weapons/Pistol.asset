@@ -13,11 +13,16 @@ MonoBehaviour:
   m_Name: Pistol
   m_EditorClassIdentifier: 
   weaponName: Pistol
-  type: 0
   weaponDisplay: {fileID: -743891441, guid: fedc4756c77733a4cb3c0870373af193, type: 3}
   damage: 26.5
   fireRate: 2.29
-  ammoCapacity: 32
+  maxAmmo: 1
   reloadTime: 0.16832446
   bulletForce: 33.8
+  isInfiniteAmmo: 0
+  ammoCapacity: 32
+  currentAmmo: 0
+  isShotgun: 0
+  pelletCount: 5
+  spreadAngle: 10
   bulletPrefab: {fileID: 3625412812425070808, guid: 48f021185cf1e484f839d575f4f414ec, type: 3}
