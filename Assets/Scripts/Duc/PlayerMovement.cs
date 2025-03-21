@@ -37,6 +37,9 @@ public class PlayerMovement : NetworkBehaviour
 
         rb.MovePosition(rb.position + movement * moveSpeed * Runner.DeltaTime);
 
+        if (movement == Vector2.zero)
+            rb.velocity = Vector2.zero;
+
         Vector2 lookDir = -(mousePos - rb.position);
         float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
 

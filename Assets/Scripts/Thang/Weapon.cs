@@ -69,7 +69,6 @@ public class Weapon : NetworkBehaviour
         if (hit.transform.CompareTag("Player") && hit.transform != transform.root)
         {
             hit.transform.GetComponent<PlayerNetworkProperties>().TakeDamageRpc(10);
-            Debug.Log("Damage enemy");
         }
     }
 

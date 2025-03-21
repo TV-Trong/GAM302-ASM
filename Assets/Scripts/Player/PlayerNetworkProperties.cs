@@ -1,4 +1,3 @@
-using System;
 using Fusion;
 using TMPro;
 using UnityEngine;
@@ -9,15 +8,17 @@ public class PlayerNetworkProperties : NetworkBehaviour
     TextMeshProUGUI playerName;
     Slider HPSlider;
 
+    [Networked]
     public float BaseHP { get; set; }
 
-    [Networked, OnChangedRender(nameof(OnTakingDamage))]
+    [Networked]
     [HideInInspector]
     public float CurrentHP { get; set; }
 
     [Networked]
     [HideInInspector]
     public string PlayerName { get; set; }
+
 
     private void Update()
     {
@@ -32,15 +33,13 @@ public class PlayerNetworkProperties : NetworkBehaviour
         playerName = GetComponentInChildren<TextMeshProUGUI>();
         HPSlider = GetComponentInChildren<Slider>();
 
-        //if (HasStateAuthority) 
-            SetupPropertiesRpc(PlayerPrefs.GetString("LocalName"), 100f);
+        PlayerName = PlayerPrefs.GetString("LocalName");
+        BaseHP = CurrentHP = 100f;
     }
 
-    [Rpc(RpcSources.All, RpcTargets.All)]
-    public void SetupPropertiesRpc(string _name, float _baseHP)
+    public override void Render()
     {
-        PlayerName = _name;
-        BaseHP = CurrentHP = _baseHP;
+        HPSlider.value = CurrentHP / BaseHP;
         playerName.text = PlayerName;
     }
 
@@ -48,10 +47,5 @@ public class PlayerNetworkProperties : NetworkBehaviour
     public void TakeDamageRpc(float damage)
     {
         CurrentHP -= damage;
-    }
-
-    void OnTakingDamage()
-    { 
-        HPSlider.value = CurrentHP / BaseHP;
     }
 }

@@ -1,7 +1,6 @@
 using Fusion;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
