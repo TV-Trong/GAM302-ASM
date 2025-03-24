@@ -41,13 +41,19 @@ public class Weapon : NetworkBehaviour
 
                 if (weaponData.isShotgun)
                 {
-                    ShootShotgun();
+                    InvokeRepeating("ShootShotgun", 0, weaponData.fireRate);
                 }
                 else
                 {
-                    Shoot();
+                    InvokeRepeating("Shoot", 0, weaponData.fireRate);
                 }
             }
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            CancelInvoke("Shoot");
+            CancelInvoke("ShootShotgun");
         }
     }
 
@@ -56,7 +62,7 @@ public class Weapon : NetworkBehaviour
         if (weaponData.currentAmmo <= 0 && !weaponData.isInfiniteAmmo) return;
 
         Vector2 mouseWorldPosition = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 direction = (mouseWorldPosition - (Vector2)firePoint.position).normalized;
+        Vector2 direction = (mouseWorldPosition - (Vector2)playerTransform.position).normalized;
 
         RaycastHit2D hit = Physics2D.Raycast(firePoint.position, direction, weaponData.bulletForce);
         Vector2 targetPoint = hit.collider != null ? hit.point : (Vector2)firePoint.position + direction * weaponData.bulletForce;
@@ -75,7 +81,7 @@ public class Weapon : NetworkBehaviour
         if (weaponData.currentAmmo <= 0 && !weaponData.isInfiniteAmmo) return;
 
         Vector2 mouseWorldPosition = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 direction = (mouseWorldPosition - (Vector2)firePoint.position).normalized;
+        Vector2 direction = (mouseWorldPosition - (Vector2)playerTransform.position).normalized;
 
         int pelletCount = weaponData.GetPelletCount();
         float spreadAngle = weaponData.GetSpreadAngle();
