@@ -48,7 +48,6 @@ public class PlayerNetworkProperties : NetworkBehaviour
 
         foreach (var change in changeDetector.DetectChanges(this, out var previousBuffer, out var currentBuffer))
         {
-            Debug.Log("New player");
             break;
         }
     }
@@ -57,5 +56,11 @@ public class PlayerNetworkProperties : NetworkBehaviour
     public void TakeDamageRpc(float damage)
     {
         CurrentHP -= damage;
+
+        if (CurrentHP <= 0)
+        {
+            FindAnyObjectByType<PlayerSpawner>().PlayerRespawn(Runner.LocalPlayer);
+            Runner.Despawn(Object);
+        }
     }
 }
