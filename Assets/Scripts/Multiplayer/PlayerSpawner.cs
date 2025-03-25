@@ -1,8 +1,10 @@
+using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
 
 public class PlayerSpawner : SimulationBehaviour, IPlayerJoined
 {
+    public List<Transform> spawnPosition = new List<Transform>();
     [SerializeField] GameObject playerPrefab;
     [SerializeField] float respawnTimer = 3f;
 
@@ -10,7 +12,7 @@ public class PlayerSpawner : SimulationBehaviour, IPlayerJoined
     {
         if (player == Runner.LocalPlayer)
         {
-            NetworkObject spawnedPlayer = Runner.Spawn(playerPrefab, new Vector3(0, 1, 0), Quaternion.identity);
+            NetworkObject spawnedPlayer = Runner.Spawn(playerPrefab, GetSpawnPosition(), Quaternion.identity);
         }
     }
 
@@ -22,6 +24,11 @@ public class PlayerSpawner : SimulationBehaviour, IPlayerJoined
     System.Collections.IEnumerator StartSpawningTimer(PlayerRef localPlayer)
     {
         yield return new WaitForSeconds(respawnTimer);
-        var playerObject = Runner.Spawn(playerPrefab, new Vector3(0, 1, 0), Quaternion.identity, localPlayer);
+        var playerObject = Runner.Spawn(playerPrefab, GetSpawnPosition(), Quaternion.identity, localPlayer);
+    }
+
+    Vector2 GetSpawnPosition()
+    {
+        return spawnPosition[Random.Range(0, spawnPosition.Count - 1)].position;
     }
 }

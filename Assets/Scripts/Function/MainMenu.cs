@@ -12,6 +12,8 @@ public class MainMenu : MonoBehaviour
     [SerializeField] TextMeshProUGUI playerNamePlaceHolder;
     [SerializeField] TextMeshProUGUI roomNamePlaceHolder;
     [SerializeField] string playScene;
+    
+    GameManager gameManager;
 
     private void Start()
     {
@@ -20,6 +22,8 @@ public class MainMenu : MonoBehaviour
 
         playerNamePlaceHolder.text = $"Agent {randomPlayer}";
         roomNamePlaceHolder.text = $"Room {randomRoom}";
+
+        gameManager = GameManager.Instance;
     }
 
     public void Quit()
@@ -58,6 +62,8 @@ public class MainMenu : MonoBehaviour
         };
 
         await runnerInstance.StartGame(newGameArgs);
+
+        gameManager.currentState = GameState.Playing;
 
         if (runnerInstance.IsServer)
         {

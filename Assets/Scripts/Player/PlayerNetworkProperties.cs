@@ -46,10 +46,10 @@ public class PlayerNetworkProperties : NetworkBehaviour
         HPSlider.value = CurrentHP / BaseHP;
         playerName.text = PlayerName;
 
-        foreach (var change in changeDetector.DetectChanges(this, out var previousBuffer, out var currentBuffer))
-        {
-            break;
-        }
+        //foreach (var change in changeDetector.DetectChanges(this, out var previousBuffer, out var currentBuffer))
+        //{
+        //    break;
+        //}
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]

@@ -5,7 +5,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    GameState currentState;
+    [HideInInspector] public GameState currentState;
 
     private void Awake()
     {
@@ -14,12 +14,11 @@ public class GameManager : MonoBehaviour
         else
             Destroy(gameObject);
         DontDestroyOnLoad(gameObject);
-
-        currentState = GameState.MainMenu;
     }
 
     private void Start()
     {
+        currentState = GameState.MainMenu;
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
@@ -28,12 +27,23 @@ public class GameManager : MonoBehaviour
     {
         if (currentState == GameState.Playing)
         {
-            // Gọi hàm gì đó khi vào scene chơi game
+            PlayerSpawner playerSpawner = FindAnyObjectByType<PlayerSpawner>();
+            GameObject spawnPoints = GameObject.FindWithTag("SpawnPoint");
+
+            foreach (Transform spawnPoint in spawnPoints.transform)     
+            {
+                playerSpawner.spawnPosition.Add(spawnPoint);
+            }
         }
         else
         {
             // Khi thoát màn chơi thì gọi hàm này
         }
+    }
+
+    private void OnApplicationQuit()
+    {
+        currentState = GameState.MainMenu;
     }
 }
 
