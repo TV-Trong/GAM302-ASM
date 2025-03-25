@@ -10,6 +10,8 @@ public class Weapon : NetworkBehaviour
     [SerializeField] private Transform playerTransform; // Vị trí người chơi
     [SerializeField] private Transform firePoint; // Điểm bắn đạn
 
+    [SerializeField] LayerMask ignoredLayer;
+
     private bool canShoot = false;
 
     void Start()
@@ -64,7 +66,7 @@ public class Weapon : NetworkBehaviour
         Vector2 mouseWorldPosition = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 direction = (mouseWorldPosition - (Vector2)playerTransform.position).normalized;
 
-        RaycastHit2D hit = Physics2D.Raycast(firePoint.position, direction, weaponData.bulletForce);
+        RaycastHit2D hit = Physics2D.Raycast(firePoint.position, direction, weaponData.bulletForce, ~ignoredLayer);
         Vector2 targetPoint = hit.collider != null ? hit.point : (Vector2)firePoint.position + direction * weaponData.bulletForce;
 
         NetworkObject bulletTrail = Runner.Spawn(bulletTrailPrefab, firePoint.position, Quaternion.identity);
@@ -92,7 +94,7 @@ public class Weapon : NetworkBehaviour
             float angleOffset = (i - halfSpread) * spreadAngle;
             Vector2 spreadDirection = Quaternion.Euler(0, 0, angleOffset) * direction;
 
-            RaycastHit2D hit = Physics2D.Raycast(firePoint.position, spreadDirection, weaponData.bulletForce);
+            RaycastHit2D hit = Physics2D.Raycast(firePoint.position, spreadDirection, weaponData.bulletForce, ~ignoredLayer);
             Vector2 targetPoint = hit.collider != null ? hit.point : (Vector2)firePoint.position + spreadDirection * weaponData.bulletForce;
 
             NetworkObject bulletTrail = Runner.Spawn(bulletTrailPrefab, firePoint.position, Quaternion.identity);

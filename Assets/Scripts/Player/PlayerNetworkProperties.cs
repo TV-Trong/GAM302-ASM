@@ -7,6 +7,8 @@ public class PlayerNetworkProperties : NetworkBehaviour
 {
     TextMeshProUGUI playerName;
     Slider HPSlider;
+    [SerializeField] GameObject light2D;
+    [SerializeField] GameObject playerGUI;
 
     [Networked]
     public float BaseHP { get; set; }
@@ -20,8 +22,6 @@ public class PlayerNetworkProperties : NetworkBehaviour
     public string PlayerName { get; set; }
 
     ChangeDetector changeDetector;
-
-
     private void Update()
     {
         if (HasStateAuthority && Input.GetKeyDown(KeyCode.Space))
@@ -35,8 +35,13 @@ public class PlayerNetworkProperties : NetworkBehaviour
         playerName = GetComponentInChildren<TextMeshProUGUI>();
         HPSlider = GetComponentInChildren<Slider>();
 
+        if (HasStateAuthority)
+            light2D.SetActive(true);
+
         PlayerName = PlayerPrefs.GetString("LocalName");
         BaseHP = CurrentHP = 100f;
+
+        TogglePlayerGUI();
         
         changeDetector = GetChangeDetector(ChangeDetector.Source.SimulationState);
     }
@@ -61,6 +66,14 @@ public class PlayerNetworkProperties : NetworkBehaviour
         {
             FindAnyObjectByType<PlayerSpawner>().PlayerRespawn(Runner.LocalPlayer);
             Runner.Despawn(Object);
+        }
+    }
+
+    public void TogglePlayerGUI(bool isOn = false)
+    {
+        if (!HasStateAuthority)
+        {
+            playerGUI.SetActive(isOn);
         }
     }
 }
