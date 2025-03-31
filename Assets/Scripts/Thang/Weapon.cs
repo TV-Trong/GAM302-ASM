@@ -63,6 +63,8 @@ public class Weapon : NetworkBehaviour
     {
         if (weaponData.currentAmmo <= 0 && !weaponData.isInfiniteAmmo) return;
 
+        AudioManager.Instance.PlayAudio("AK47", AudioType.SFX);
+
         Vector2 mouseWorldPosition = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 direction = (mouseWorldPosition - (Vector2)playerTransform.position).normalized;
 

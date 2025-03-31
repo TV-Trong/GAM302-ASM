@@ -39,6 +39,14 @@ public class MainMenu : MonoBehaviour
         StartGame(GameMode.Shared, roomName, playScene);
     }
 
+    public void SingleMode()
+    {
+        string roomName = string.IsNullOrWhiteSpace(roomNameInput.text) ? roomNamePlaceHolder.text : roomNameInput.text;
+        SetLocalName();
+
+        StartGame(GameMode.Single, roomName, playScene);
+    }
+
     private void SetLocalName()
     {
         string localName = string.IsNullOrWhiteSpace(playerNameInput.text) ? playerNamePlaceHolder.text : playerNameInput.text;
