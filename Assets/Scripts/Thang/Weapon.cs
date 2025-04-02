@@ -82,7 +82,7 @@ public class Weapon : NetworkBehaviour
 
         inventory.UseAmmo(weaponData);
 
-        AudioManager.Instance.PlayAudioRpc("AK47", "Master/SFX/Gun Shot");
+        AudioManager.Instance.PlayAudioRpc("AK47", "Master/SFX/Gun Shot", transform.root.position);
 
         Vector2 mouseWorldPosition = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 direction = (mouseWorldPosition - (Vector2)playerTransform.position).normalized;

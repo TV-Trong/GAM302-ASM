@@ -31,7 +31,7 @@ public class AudioManager : NetworkBehaviour
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
-    public void PlayAudioRpc(string groupName, string audioType)
+    public void PlayAudioRpc(string groupName, string audioType, Vector3 soundPosition)
     {
         Debug.Log($"Play audio {groupName} {audioType}");
 
@@ -42,6 +42,7 @@ public class AudioManager : NetworkBehaviour
         }
 
         var audio = poolAudio.GetAudioSource();
+        audio.transform.position = soundPosition;
 
         if (audio != null )
         {

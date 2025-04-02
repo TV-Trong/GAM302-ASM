@@ -44,7 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0089571e8d4aa9c4e811665b38c7c63a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  poolAmount: 100
+  poolAmount: 50
+  audioObjectPrefab: {fileID: 3557842620211056138, guid: b1a4366c08f5841438da3e2d431a8c9c, type: 3}
 --- !u!1 &5012315903229473924
 GameObject:
   m_ObjectHideFlags: 0
@@ -115,4 +116,5 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 1268291623972948640}
+  - {fileID: 5661083143704544970}
   ForceRemoteRenderTimeframe: 0
