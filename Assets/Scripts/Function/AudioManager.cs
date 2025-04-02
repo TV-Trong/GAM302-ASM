@@ -4,7 +4,7 @@ using Fusion;
 using UnityEngine;
 using UnityEngine.Audio;
 
-public class AudioManager : MonoBehaviour
+public class AudioManager : NetworkBehaviour
 {
     public static AudioManager Instance;
 
@@ -19,7 +19,7 @@ public class AudioManager : MonoBehaviour
         Instance = this;
     }
 
-    private void Start()
+    public override void Spawned()
     {
         foreach (var group in audioGroups)
         {
@@ -30,9 +30,11 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
+    [Rpc(RpcSources.All, RpcTargets.All)]
     public void PlayAudioRpc(string groupName, string audioType)
     {
+        Debug.Log($"Play audio {groupName} {audioType}");
+
         if (!clipDict.TryGetValue(groupName, out var group))
         {
             Debug.LogWarning($"Audio clip '{groupName}' not found!");
@@ -48,17 +50,5 @@ public class AudioManager : MonoBehaviour
             audio.outputAudioMixerGroup = audioMixer.FindMatchingGroups(audioType)[0];
             audio.Play();
         }
-    }
-}
-
-[Serializable]
-public class AudioGroup
-{
-    public string groupName;
-    public List<AudioClip> clips;
-
-    public int GetRandomClip()
-    {
-        return UnityEngine.Random.Range(0, clips.Count);
     }
 }
