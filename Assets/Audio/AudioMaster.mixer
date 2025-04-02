@@ -158,8 +158,16 @@ AudioMixerController:
   m_ExposedParameters:
   - guid: 414c07dcce9e35040b69613d4377ebdc
     name: MyExposedParam 1
+  - guid: cee29af5d2bfe7d45a64b5513db3f013
+    name: MyExposedParam 4
+  - guid: 1df75c564b3875848875ecc6503d4e75
+    name: MyExposedParam 2
+  - guid: e19083e311f50fb40aa95ac361ead128
+    name: MyExposedParam 5
   - guid: 004116225d273a047a822f3143981219
     name: MyExposedParam
+  - guid: ee49c35f00d314845aeae74e24d505cd
+    name: MyExposedParam 3
   m_AudioMixerGroupViews:
   - guids:
     - 74a2c032521002c45b4940103fd6be1f
@@ -216,7 +224,8 @@ AudioMixerSnapshotController:
   m_Name: Snapshot
   m_AudioMixer: {fileID: 24100000}
   m_SnapshotID: 8c9f61e4648370445b5ef61258d3c0f0
-  m_FloatValues: {}
+  m_FloatValues:
+    1df75c564b3875848875ecc6503d4e75: -23.615017
   m_TransitionOverrides: {}
 --- !u!244 &408898169076759891
 AudioMixerEffectController:
@@ -238,7 +247,7 @@ AudioMixerGroupController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Idle
+  m_Name: Idle BGM
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: 7a5e4b2d387e2e34a938dc5b4fc0bde1
   m_Children: []
@@ -337,7 +346,7 @@ AudioMixerGroupController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Gun shot
+  m_Name: Gun Shot
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: d355d92e380e2f9429bce5cbab03f92f
   m_Children: []

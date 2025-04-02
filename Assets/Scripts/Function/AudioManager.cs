@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Fusion;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -29,34 +30,25 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void PlayAudio(string groupName, AudioType type)
+    [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
+    public void PlayAudioRpc(string groupName, string audioType)
     {
-        Debug.Log("OK");
-
         if (!clipDict.TryGetValue(groupName, out var group))
         {
             Debug.LogWarning($"Audio clip '{groupName}' not found!");
             return;
         }
 
-        Debug.Log(group == null);
-        Debug.Log(group.GetRandomClip());
         var audio = poolAudio.GetAudioSource();
 
         if (audio != null )
         {
             audio.Stop();
             audio.clip = group.clips[group.GetRandomClip()];
-            audio.outputAudioMixerGroup = audioMixer.FindMatchingGroups(type.ToString())[0];
+            audio.outputAudioMixerGroup = audioMixer.FindMatchingGroups(audioType)[0];
             audio.Play();
         }
     }
-}
-
-public enum AudioType
-{
-    SFX,
-    BGM
 }
 
 [Serializable]

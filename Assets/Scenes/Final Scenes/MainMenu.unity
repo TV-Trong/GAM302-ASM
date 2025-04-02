@@ -1037,9 +1037,7 @@ MonoBehaviour:
   audioGroups:
   - groupName: AK47
     clips:
-    - {fileID: 8300000, guid: 5eb829216350e02449c8864684d9520e, type: 3}
-    - {fileID: 8300000, guid: e38bc00b13ca63e439d22e78384955d7, type: 3}
-    - {fileID: 8300000, guid: 2c5b57e6ca9009f42bb8a20573b74b30, type: 3}
+    - {fileID: 8300000, guid: d1172f49ba8f3774998f41f6acb85c1c, type: 3}
 --- !u!1 &384352080
 GameObject:
   m_ObjectHideFlags: 0
@@ -2959,7 +2957,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0089571e8d4aa9c4e811665b38c7c63a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  poolAmount: 50
+  poolAmount: 100
 --- !u!1 &1706485715
 GameObject:
   m_ObjectHideFlags: 0
