@@ -15,16 +15,14 @@ MonoBehaviour:
   weaponName: Shotgun
   weaponDisplay: {fileID: 570637804, guid: fedc4756c77733a4cb3c0870373af193, type: 3}
   damage: 40
-  fireRate: 0.1
-  maxAmmo: 1
+  fireRate: 1
+  maxAmmo: 4
   reloadTime: 0.1
   bulletForce: 44.3
   isInfiniteAmmo: 0
   ammoCapacity: 1
-  currentAmmo: 0
+  currentAmmo: 20
   isShotgun: 1
   pelletCount: 5
   spreadAngle: 10
   bulletPrefab: {fileID: 3625412812425070808, guid: 48f021185cf1e484f839d575f4f414ec, type: 3}
-  shotgunPelletCount: 5
-  shotgunSpreadAngle: 4.47

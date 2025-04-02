@@ -4,18 +4,19 @@ using UnityEngine;
 
 public class Weapon : NetworkBehaviour
 {
-    [SerializeField] public WeaponBase weaponData; // Dữ liệu vũ khí từ ScriptableObject
-    [SerializeField] private GameObject bulletTrailPrefab; // Hiệu ứng đường đạn
-    [SerializeField] private SpriteRenderer weaponSpriteRenderer; // Hình ảnh súng
-    [SerializeField] private Transform playerTransform; // Vị trí người chơi
-    [SerializeField] private Transform firePoint; // Điểm bắn đạn
+    [SerializeField] public WeaponBase weaponData; 
+    [SerializeField] private GameObject bulletTrailPrefab; 
+    [SerializeField] private SpriteRenderer weaponSpriteRenderer; 
+    [SerializeField] private Transform playerTransform; 
+    [SerializeField] private Transform firePoint; 
 
     [SerializeField] LayerMask ignoredLayer;
 
     private bool canShoot = false;
-
+    private PlayerInventory inventory;
     void Start()
     {
+        inventory = FindObjectOfType<PlayerInventory>();
         if (weaponData == null)
         {
             Debug.LogWarning("Chưa có vũ khí! Cần nhặt vũ khí trước khi bắn.");
@@ -25,43 +26,58 @@ public class Weapon : NetworkBehaviour
         {
             UpdateWeaponSprite();
             canShoot = true;
-            weaponData.currentAmmo = weaponData.maxAmmo; // Reset lại số đạn khi khởi tạo
+            weaponData.currentAmmo = weaponData.maxAmmo; 
         }
     }
 
     void Update()
     {
-        if (!HasStateAuthority || !canShoot || weaponData == null) return;
+        if (!HasStateAuthority || !canShoot || weaponData == null) 
+            return;
 
         if (Input.GetMouseButtonDown(0))
         {
-            PlayerInventory inventory = FindObjectOfType<PlayerInventory>();
-
             if (weaponData.isInfiniteAmmo || weaponData.currentAmmo > 0)
             {
-                inventory.UseAmmo(weaponData);
-
                 if (weaponData.isShotgun)
                 {
-                    InvokeRepeating("ShootShotgun", 0, weaponData.fireRate);
+                    ShootShotgun();
+                    canShoot = false;
+                    Invoke("DelayShot", weaponData.fireRate);
                 }
                 else
                 {
                     InvokeRepeating("Shoot", 0, weaponData.fireRate);
+                    canShoot = false;
+                    Invoke("DelayShot", weaponData.fireRate);
                 }
             }
         }
 
         if (Input.GetMouseButtonUp(0))
         {
-            CancelInvoke("Shoot");
-            CancelInvoke("ShootShotgun");
+            CancelShooting();
         }
+    }
+
+    public void CancelShooting()
+    {
+        CancelInvoke("Shoot");
+    }
+
+    void DelayShot()
+    {
+        canShoot = true;
     }
 
     void Shoot()
     {
-        if (weaponData.currentAmmo <= 0 && !weaponData.isInfiniteAmmo) return;
+        if (weaponData.currentAmmo <= 0 && !weaponData.isInfiniteAmmo)
+        {
+            return;
+        }
+
+        inventory.UseAmmo(weaponData);
 
         AudioManager.Instance.PlayAudioRpc("AK47", "Master/SFX/Gun Shot");
 
@@ -82,9 +98,14 @@ public class Weapon : NetworkBehaviour
 
     void ShootShotgun()
     {
-        if (weaponData.currentAmmo <= 0 && !weaponData.isInfiniteAmmo) return;
+        if (weaponData.currentAmmo <= 0 && !weaponData.isInfiniteAmmo)
+        {
+            return;
+        }
 
-        Vector2 mouseWorldPosition = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        inventory.UseAmmo(weaponData);
+
+        Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 direction = (mouseWorldPosition - (Vector2)playerTransform.position).normalized;
 
         int pelletCount = weaponData.GetPelletCount();
@@ -93,21 +114,27 @@ public class Weapon : NetworkBehaviour
 
         for (int i = 0; i < pelletCount; i++)
         {
-            float angleOffset = (i - halfSpread) * spreadAngle;
+            // Tính toán góc phân tán cho viên đạn
+            float angleOffset = Random.Range(-spreadAngle / 2f, spreadAngle / 2f);  // Random góc phân tán cho mỗi viên
             Vector2 spreadDirection = Quaternion.Euler(0, 0, angleOffset) * direction;
 
             RaycastHit2D hit = Physics2D.Raycast(firePoint.position, spreadDirection, weaponData.bulletForce, ~ignoredLayer);
             Vector2 targetPoint = hit.collider != null ? hit.point : (Vector2)firePoint.position + spreadDirection * weaponData.bulletForce;
 
+            // Tạo và di chuyển trail cho viên đạn
             NetworkObject bulletTrail = Runner.Spawn(bulletTrailPrefab, firePoint.position, Quaternion.identity);
             StartCoroutine(MoveTrail(bulletTrail, targetPoint));
 
             if (hit.collider != null)
             {
+                // Kiểm tra nếu viên đạn trúng đối tượng có tag là "Player"
                 HitPlayer(hit);
             }
         }
     }
+
+
+
 
     private void HitPlayer(RaycastHit2D hit)
     {
@@ -142,9 +169,16 @@ public class Weapon : NetworkBehaviour
 
     public void SetWeapon(WeaponBase newWeapon)
     {
+        if (newWeapon == null)
+        {
+            Debug.LogWarning("SetWeapon: Vũ khí mới là null!");
+            return;
+        }
+
         weaponData = newWeapon;
         UpdateWeaponSprite();
         canShoot = true;
+
         Debug.Log($"Trang bị vũ khí: {weaponData.name}");
     }
 

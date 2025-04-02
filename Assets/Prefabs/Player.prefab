@@ -529,7 +529,7 @@ GameObject:
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3241958760584275537
 Transform:
   m_ObjectHideFlags: 0
@@ -622,6 +622,7 @@ GameObject:
   - component: {fileID: 8202283807932710331}
   - component: {fileID: 8183991009655769841}
   - component: {fileID: 580682135272751919}
+  - component: {fileID: 7265659519814717745}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -693,6 +694,7 @@ MonoBehaviour:
   - {fileID: 1021581238728857877}
   - {fileID: 8202283807932710331}
   - {fileID: 8183991009655769841}
+  - {fileID: 7265659519814717745}
   - {fileID: 6368910362569652155}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &1021581238728857877
@@ -792,8 +794,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WeaponSlot:
+  - {fileID: 11400000, guid: 7a535cb95e32acb418ac81559f43206d, type: 2}
   - {fileID: 0}
-  - {fileID: 0}
+--- !u!114 &7265659519814717745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5076637523551162343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e28ae8cea8a5979499dcb98052fb82a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponData: {fileID: 0}
+  bulletTrailPrefab: {fileID: 3625412812425070808, guid: 48f021185cf1e484f839d575f4f414ec, type: 3}
+  weaponSpriteRenderer: {fileID: 3179981444828230001}
+  playerTransform: {fileID: 7569144172436098925}
+  firePoint: {fileID: 7305648462107883196}
+  ignoredLayer:
+    serializedVersion: 2
+    m_Bits: 4
 --- !u!1 &5311580709747848325
 GameObject:
   m_ObjectHideFlags: 0
@@ -1503,12 +1525,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8427496451992396560}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e28ae8cea8a5979499dcb98052fb82a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponData: {fileID: 11400000, guid: 26d24265a1908bd4d9752b833c161a40, type: 2}
+  weaponData: {fileID: 11400000, guid: 7a535cb95e32acb418ac81559f43206d, type: 2}
   bulletTrailPrefab: {fileID: 3625412812425070808, guid: 48f021185cf1e484f839d575f4f414ec, type: 3}
   weaponSpriteRenderer: {fileID: 3179981444828230001}
   playerTransform: {fileID: 7569144172436098925}
