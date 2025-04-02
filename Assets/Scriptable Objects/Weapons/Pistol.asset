@@ -15,7 +15,7 @@ MonoBehaviour:
   weaponName: Pistol
   weaponDisplay: {fileID: -743891441, guid: fedc4756c77733a4cb3c0870373af193, type: 3}
   damage: 10
-  fireRate: 0.3
+  fireRate: 0.5
   maxAmmo: 100
   reloadTime: 0.1
   bulletForce: 100
