@@ -106,6 +106,7 @@ public class PlayerInventory : MonoBehaviour
         if (weaponScript != null)
         {
             Debug.Log($"EquipWeapon: Đang trang bị {weapon.name}");
+            weaponScript.CancelShooting();
             weaponScript.SetWeapon(weapon);
             weaponScript.SetWeaponActive(true); // Đảm bảo vũ khí hiển thị 
         }

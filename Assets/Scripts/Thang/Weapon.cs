@@ -32,39 +32,52 @@ public class Weapon : NetworkBehaviour
 
     void Update()
     {
-        if (!HasStateAuthority || !canShoot || weaponData == null) return;
+        if (!HasStateAuthority || !canShoot || weaponData == null) 
+            return;
 
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("Chuột đã được nhấn");
             if (weaponData.isInfiniteAmmo || weaponData.currentAmmo > 0)
             {
-                inventory.UseAmmo(weaponData);
-
                 if (weaponData.isShotgun)
                 {
-                    Debug.Log("Bắn Shotgun!");
                     ShootShotgun();
+                    canShoot = false;
+                    Invoke("DelayShot", weaponData.fireRate);
                 }
                 else
                 {
-                    //Debug.Log("Bắn súng bình thường!");
                     InvokeRepeating("Shoot", 0, weaponData.fireRate);
+                    canShoot = false;
+                    Invoke("DelayShot", weaponData.fireRate);
                 }
             }
         }
-        
 
         if (Input.GetMouseButtonUp(0))
         {
-            CancelInvoke("Shoot");
-            CancelInvoke("ShootShotgun");
+            CancelShooting();
         }
+    }
+
+    public void CancelShooting()
+    {
+        CancelInvoke("Shoot");
+    }
+
+    void DelayShot()
+    {
+        canShoot = true;
     }
 
     void Shoot()
     {
-        if (weaponData.currentAmmo <= 0 && !weaponData.isInfiniteAmmo) return;
+        if (weaponData.currentAmmo <= 0 && !weaponData.isInfiniteAmmo)
+        {
+            return;
+        }
+
+        inventory.UseAmmo(weaponData);
 
         Vector2 mouseWorldPosition = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 direction = (mouseWorldPosition - (Vector2)playerTransform.position).normalized;
@@ -85,11 +98,10 @@ public class Weapon : NetworkBehaviour
     {
         if (weaponData.currentAmmo <= 0 && !weaponData.isInfiniteAmmo)
         {
-            Debug.LogWarning("❌ Shotgun hết đạn!");
             return;
         }
 
-        Debug.Log($"🔫 Shotgun bắn! Đạn còn lại: {weaponData.currentAmmo}");
+        inventory.UseAmmo(weaponData);
 
         Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 direction = (mouseWorldPosition - (Vector2)playerTransform.position).normalized;
@@ -106,8 +118,6 @@ public class Weapon : NetworkBehaviour
 
             RaycastHit2D hit = Physics2D.Raycast(firePoint.position, spreadDirection, weaponData.bulletForce, ~ignoredLayer);
             Vector2 targetPoint = hit.collider != null ? hit.point : (Vector2)firePoint.position + spreadDirection * weaponData.bulletForce;
-
-            Debug.Log($"💥 Viên đạn {i + 1}/{pelletCount} đến vị trí: {targetPoint}");
 
             // Tạo và di chuyển trail cho viên đạn
             NetworkObject bulletTrail = Runner.Spawn(bulletTrailPrefab, firePoint.position, Quaternion.identity);
