@@ -14,6 +14,8 @@ public class Weapon : NetworkBehaviour
 
     private bool canShoot = false;
     private PlayerInventory inventory;
+
+    private float timer;
     void Start()
     {
         inventory = FindObjectOfType<PlayerInventory>();
@@ -32,7 +34,13 @@ public class Weapon : NetworkBehaviour
 
     void Update()
     {
-        if (!HasStateAuthority || !canShoot || weaponData == null) 
+        timer -= Time.deltaTime;
+        if (timer <= 0)
+        {
+            canShoot = true;
+        }
+
+        if (!HasStateAuthority || weaponData == null) 
             return;
 
         if (Input.GetMouseButtonDown(0))
@@ -42,14 +50,10 @@ public class Weapon : NetworkBehaviour
                 if (weaponData.isShotgun)
                 {
                     ShootShotgun();
-                    canShoot = false;
-                    Invoke("DelayShot", weaponData.fireRate);
                 }
                 else
                 {
                     InvokeRepeating("Shoot", 0, weaponData.fireRate);
-                    canShoot = false;
-                    Invoke("DelayShot", weaponData.fireRate);
                 }
             }
         }
@@ -65,17 +69,16 @@ public class Weapon : NetworkBehaviour
         CancelInvoke("Shoot");
     }
 
-    void DelayShot()
-    {
-        canShoot = true;
-    }
-
     void Shoot()
     {
         if (weaponData.currentAmmo <= 0 && !weaponData.isInfiniteAmmo)
-        {
             return;
-        }
+
+        if (!canShoot)
+            return;
+
+        timer = weaponData.fireRate;
+        canShoot = false;
 
         inventory.UseAmmo(weaponData);
 
@@ -97,9 +100,13 @@ public class Weapon : NetworkBehaviour
     void ShootShotgun()
     {
         if (weaponData.currentAmmo <= 0 && !weaponData.isInfiniteAmmo)
-        {
             return;
-        }
+
+        if (!canShoot)
+            return;
+
+        timer = weaponData.fireRate;
+        canShoot = false;
 
         inventory.UseAmmo(weaponData);
 

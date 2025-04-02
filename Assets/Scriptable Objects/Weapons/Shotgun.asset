@@ -24,5 +24,5 @@ MonoBehaviour:
   currentAmmo: 20
   isShotgun: 1
   pelletCount: 5
-  spreadAngle: 10
+  spreadAngle: 20
   bulletPrefab: {fileID: 3625412812425070808, guid: 48f021185cf1e484f839d575f4f414ec, type: 3}
