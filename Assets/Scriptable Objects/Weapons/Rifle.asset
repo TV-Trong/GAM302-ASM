@@ -16,7 +16,7 @@ MonoBehaviour:
   weaponDisplay: {fileID: 728916852, guid: fedc4756c77733a4cb3c0870373af193, type: 3}
   damage: 15
   fireRate: 0.1
-  maxAmmo: 1
+  maxAmmo: 40
   reloadTime: 0.1
   bulletForce: 100
   isInfiniteAmmo: 0

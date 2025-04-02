@@ -8,6 +8,7 @@ TagManager:
   - Pistol
   - SpawnPoint
   - Obstacle
+  - Shotgun
   layers:
   - Default
   - TransparentFX

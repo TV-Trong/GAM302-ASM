@@ -3,26 +3,37 @@
 [CreateAssetMenu(fileName = "NewShotgun", menuName = "Weapon System/Shotgun")]
 public class ShotgunWeapon : WeaponBase
 {
-    [SerializeField] private int shotgunPelletCount ;  // Shotgun bắn 8 viên
-    [SerializeField] private float shotgunSpreadAngle ; // Tỏa ra 30 độ
-
     public override void Fire(Vector2 position, Vector2 direction)
     {
-        float halfSpread = shotgunSpreadAngle / 2;
-
-        for (int i = 0; i < shotgunPelletCount; i++)
+        if (bulletPrefab == null)
         {
-            float randomAngle = Random.Range(-halfSpread, halfSpread);
-            Vector2 spreadDirection = Quaternion.Euler(0, 0, randomAngle) * direction;
+            Debug.LogError("Bullet prefab is not assigned!");
+            return;
+        }
 
+        // Lấy số lượng viên đạn và góc tỏa từ lớp cha (WeaponBase)
+        int pelletCount = GetPelletCount();
+        float spreadAngle = GetSpreadAngle();
+
+        for (int i = 0; i < pelletCount; i++)
+        {
+            // Tính toán góc phân tán của từng viên đạn
+            float angleOffset = Random.Range(-spreadAngle / 2f, spreadAngle / 2f);  // Ngẫu nhiên giữa góc phân tán
+            Vector2 spreadDirection = Quaternion.Euler(0, 0, angleOffset) * direction;
+
+            // Tạo viên đạn
             GameObject bullet = Instantiate(bulletPrefab, position, Quaternion.identity);
-            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-            rb.velocity = spreadDirection * bulletForce;
 
-            Debug.DrawRay(position, spreadDirection * bulletForce, Color.red, 0.5f);
+            // Lấy Rigidbody2D và thiết lập vận tốc
+            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.velocity = spreadDirection * bulletForce;
+            }
+            else
+            {
+                Debug.LogError("Rigidbody2D component not found on bullet prefab!");
+            }
         }
     }
-
-    public override int GetPelletCount() => shotgunPelletCount;
-    public override float GetSpreadAngle() => shotgunSpreadAngle;
 }
