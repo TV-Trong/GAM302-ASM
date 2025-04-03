@@ -13,6 +13,9 @@ public class PlayerMovement : NetworkBehaviour
     Vector2 mousePos;
 
     [SerializeField] GameObject playerUI;
+
+    private bool isMoving => movement != Vector2.zero;
+    private bool isInvoking;
     public override void Spawned()
     {
         if (HasStateAuthority)
@@ -28,6 +31,25 @@ public class PlayerMovement : NetworkBehaviour
         movement.y = Input.GetAxisRaw("Vertical");
 
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        if (isMoving && !isInvoking)
+        {
+            isInvoking = true;
+            InvokeRepeating(nameof(PlayFootstep), 0, 0.5f);
+        }
+        else if (!isMoving && isInvoking)
+        {
+            isInvoking = false;
+            CancelInvoke(nameof(PlayFootstep));
+        }
+    }
+
+    void PlayFootstep()
+    {
+        if (!HasStateAuthority)
+            return;
+
+        AudioManager.Instance.PlayAudioRpc("Footstep", "Master/SFX/Footstep", transform.position);
     }
 
     public override void FixedUpdateNetwork()

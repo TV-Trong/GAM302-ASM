@@ -30,11 +30,9 @@ public class AudioManager : NetworkBehaviour
         }
     }
 
-    [Rpc(RpcSources.All, RpcTargets.All)]
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void PlayAudioRpc(string groupName, string audioType, Vector3 soundPosition)
     {
-        Debug.Log($"Play audio {groupName} {audioType}");
-
         if (!clipDict.TryGetValue(groupName, out var group))
         {
             Debug.LogWarning($"Audio clip '{groupName}' not found!");
