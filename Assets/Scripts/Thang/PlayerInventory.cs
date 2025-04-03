@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
@@ -32,7 +33,7 @@ public class PlayerInventory : MonoBehaviour
             }
         }
 
-        EquipWeapon(WeaponSlot[0]);
+        StartCoroutine(EquipWeapon(WeaponSlot[0]));
     }
 
     void Update()
@@ -40,12 +41,12 @@ public class PlayerInventory : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             Debug.Log("Nhấn phím 1 - Đổi sang vũ khí slot 1");
-            EquipWeapon(WeaponSlot[0]);
+            StartCoroutine(EquipWeapon(WeaponSlot[0]));
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             Debug.Log("Nhấn phím 2 - Đổi sang vũ khí slot 2");
-            EquipWeapon(WeaponSlot[1]);
+            StartCoroutine(EquipWeapon(WeaponSlot[1]));
         }
     }
     public void PickUpWeapon(WeaponBase newWeapon)
@@ -62,7 +63,7 @@ public class PlayerInventory : MonoBehaviour
             Debug.Log($"Nhặt {newWeapon.name}, số đạn: {ammoCount[newWeapon]}");
         }
 
-        EquipWeapon(newWeapon); 
+        StartCoroutine(EquipWeapon(newWeapon)); 
     }
 
     public void UseAmmo(WeaponBase weapon)
@@ -79,29 +80,39 @@ public class PlayerInventory : MonoBehaviour
         {
             if (ammoCount.ContainsKey(weapon))
             {
-                ammoCount[weapon]--;
-
-                Debug.Log($"Đạn còn lại: {ammoCount[weapon]}");
-
-                if (ammoCount[weapon] <= 0)
-                {
-                    DropWeapon();
-                    EquipWeapon(WeaponSlot[0]);
-                }
+                StartCoroutine(RemoveWeapon(weapon));
             }
         }
     }
 
-    void EquipWeapon(WeaponBase weapon)
+    IEnumerator RemoveWeapon(WeaponBase weapon)
+    {
+        ammoCount[weapon]--;
+        Debug.Log($"Đạn còn lại: {ammoCount[weapon]}");
+
+        if (weaponScript.weaponData.name == "PumpShotgun")
+        {
+            yield return new WaitForSeconds(2);
+        }
+        else
+            yield return null;
+
+        if (ammoCount[weapon] <= 0)
+        {
+            DropWeapon();
+            StartCoroutine(EquipWeapon(WeaponSlot[0]));
+        }
+    }
+
+    IEnumerator EquipWeapon(WeaponBase weapon)
     {
         if (weapon == null)
         {
-            Debug.Log($"EquipWeapon: Đang trang bị {weapon.name}"); 
-            return;
+            yield break;
         }
 
-        Debug.Log($"EquipWeapon: Đang trang bị {weapon.name}");
-        currentWeapon = weapon;
+        AudioManager.Instance.PlayAudioRpc("Pickup" + weapon.name, "Master/SFX/Gun Shot", transform.root.position);
+        weaponScript.isPickingWeapon = true;
 
         if (weaponScript != null)
         {
@@ -114,6 +125,11 @@ public class PlayerInventory : MonoBehaviour
         {
             Debug.LogWarning("weaponScript bị null!");
         }
+
+        yield return new WaitForSeconds(2);
+
+        weaponScript.isPickingWeapon = false;
+        currentWeapon = weapon;
     }
 
     void DropWeapon()

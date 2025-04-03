@@ -109,10 +109,16 @@ MonoBehaviour:
     - {fileID: 8300000, guid: feb0b95bcee86b743a2f5e448c15a613, type: 3}
   - groupName: PickupAK47
     clips:
-    - {fileID: 8300000, guid: 94bdf8bdfca4f55488e6da11973eaf6c, type: 3}
-  - groupName: PickupShotgun
+    - {fileID: 8300000, guid: e626d57f711467b46ac31649e37ad687, type: 3}
+  - groupName: PickupPumpShotgun
     clips:
     - {fileID: 8300000, guid: dba9b5bea57fb7d49b586fbaee22ea40, type: 3}
+  - groupName: Glock18
+    clips:
+    - {fileID: 8300000, guid: bcc010e00a2ea804aa34134b56c4d757, type: 3}
+  - groupName: PickupGlock18
+    clips:
+    - {fileID: 8300000, guid: 12cd9b925a4a35847b907648cf2115cd, type: 3}
 --- !u!114 &-543540436202470245
 MonoBehaviour:
   m_ObjectHideFlags: 0

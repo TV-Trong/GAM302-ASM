@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 486921c2a609eae4c96415a2ee03f588, type: 3}
   m_Name: PumpShotgun
   m_EditorClassIdentifier: 
-  weaponName: Shotgun
+  weaponName: PumpShotgun
   weaponDisplay: {fileID: 570637804, guid: fedc4756c77733a4cb3c0870373af193, type: 3}
   damage: 40
   fireRate: 2.5

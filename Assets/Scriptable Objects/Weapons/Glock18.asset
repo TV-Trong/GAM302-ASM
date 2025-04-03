@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6272c0175afd5634da0a4dcc143d78d7, type: 3}
   m_Name: Glock18
   m_EditorClassIdentifier: 
-  weaponName: Pistol
+  weaponName: Glock18
   weaponDisplay: {fileID: -743891441, guid: fedc4756c77733a4cb3c0870373af193, type: 3}
   damage: 10
   fireRate: 0.5

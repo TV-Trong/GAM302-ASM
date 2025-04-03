@@ -11,7 +11,7 @@ public class Weapon : NetworkBehaviour
     [SerializeField] private Transform firePoint; 
 
     [SerializeField] LayerMask ignoredLayer;
-
+    [HideInInspector] public bool isPickingWeapon;
     private bool canShoot = false;
     private PlayerInventory inventory;
 
@@ -34,6 +34,9 @@ public class Weapon : NetworkBehaviour
 
     void Update()
     {
+        if (isPickingWeapon)
+            return;
+
         timer -= Time.deltaTime;
         if (timer <= 0)
         {

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b638957be458819438a17da864eef350, type: 3}
   m_Name: AK47
   m_EditorClassIdentifier: 
-  weaponName: Rifle
+  weaponName: AK47
   weaponDisplay: {fileID: 728916852, guid: fedc4756c77733a4cb3c0870373af193, type: 3}
   damage: 15
   fireRate: 0.12
