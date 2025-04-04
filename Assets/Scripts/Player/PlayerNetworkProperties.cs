@@ -1,4 +1,4 @@
-using Fusion;
+﻿using Fusion;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -52,5 +52,12 @@ public class PlayerNetworkProperties : NetworkBehaviour
             FindAnyObjectByType<PlayerSpawner>().PlayerRespawn(Runner.LocalPlayer);
             Runner.Despawn(Object);
         }
+    }
+
+    // thang
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void HealRpc(float healAmount)
+    {
+        CurrentHP = Mathf.Min(BaseHP, CurrentHP + healAmount); // Hồi máu nhưng không vượt quá giới hạn máu tối đa
     }
 }
