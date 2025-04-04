@@ -11,7 +11,7 @@ public class Weapon : NetworkBehaviour
     [SerializeField] private Transform firePoint; 
 
     [SerializeField] LayerMask ignoredLayer;
-
+    [HideInInspector] public bool isPickingWeapon;
     private bool canShoot = false;
     private PlayerInventory inventory;
 
@@ -34,6 +34,9 @@ public class Weapon : NetworkBehaviour
 
     void Update()
     {
+        if (isPickingWeapon)
+            return;
+
         timer -= Time.deltaTime;
         if (timer <= 0)
         {
@@ -82,6 +85,8 @@ public class Weapon : NetworkBehaviour
 
         inventory.UseAmmo(weaponData);
 
+        AudioManager.Instance.PlayAudioRpc(weaponData.name, "Master/SFX/Gun Shot", transform.root.position);
+
         Vector2 mouseWorldPosition = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 direction = (mouseWorldPosition - (Vector2)playerTransform.position).normalized;
 
@@ -109,6 +114,8 @@ public class Weapon : NetworkBehaviour
         canShoot = false;
 
         inventory.UseAmmo(weaponData);
+
+        AudioManager.Instance.PlayAudioRpc(weaponData.name, "Master/SFX/Gun Shot", transform.root.position);
 
         Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 direction = (mouseWorldPosition - (Vector2)playerTransform.position).normalized;

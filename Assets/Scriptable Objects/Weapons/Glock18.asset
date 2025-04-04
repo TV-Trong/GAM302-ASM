@@ -9,19 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b638957be458819438a17da864eef350, type: 3}
-  m_Name: Rifle
+  m_Script: {fileID: 11500000, guid: 6272c0175afd5634da0a4dcc143d78d7, type: 3}
+  m_Name: Glock18
   m_EditorClassIdentifier: 
-  weaponName: Rifle
-  weaponDisplay: {fileID: 728916852, guid: fedc4756c77733a4cb3c0870373af193, type: 3}
-  damage: 15
-  fireRate: 0.12
-  maxAmmo: 25
+  weaponName: Glock18
+  weaponDisplay: {fileID: -743891441, guid: fedc4756c77733a4cb3c0870373af193, type: 3}
+  damage: 10
+  fireRate: 0.5
+  maxAmmo: 100
   reloadTime: 0.1
   bulletForce: 100
   isInfiniteAmmo: 0
-  ammoCapacity: 1
-  currentAmmo: 1
+  ammoCapacity: 4040
+  currentAmmo: 100
   isShotgun: 0
   pelletCount: 5
   spreadAngle: 10

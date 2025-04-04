@@ -1,0 +1,141 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1837447066454389274
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 827118355795884390}
+  - component: {fileID: 5661083143704544970}
+  m_Layer: 0
+  m_Name: Audio Pool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &827118355795884390
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1837447066454389274}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4337473256664573663}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5661083143704544970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1837447066454389274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0089571e8d4aa9c4e811665b38c7c63a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolAmount: 50
+  audioObjectPrefab: {fileID: 3557842620211056138, guid: b1a4366c08f5841438da3e2d431a8c9c, type: 3}
+--- !u!1 &5012315903229473924
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4337473256664573663}
+  - component: {fileID: 1268291623972948640}
+  - component: {fileID: -543540436202470245}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4337473256664573663
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5012315903229473924}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 827118355795884390}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1268291623972948640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5012315903229473924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b5849566e4b611419e250a89c31094f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolAudio: {fileID: 5661083143704544970}
+  audioMixer: {fileID: 24100000, guid: 6af89c5cd024bcd4dbeaa249983b8e9d, type: 2}
+  audioGroups:
+  - groupName: AK47
+    clips:
+    - {fileID: 8300000, guid: d1172f49ba8f3774998f41f6acb85c1c, type: 3}
+  - groupName: Footstep
+    clips:
+    - {fileID: 8300000, guid: 932933978eba2da4e94f1f5bea0fb052, type: 3}
+    - {fileID: 8300000, guid: 170d965d0e086de44a2c4026d3aae90b, type: 3}
+    - {fileID: 8300000, guid: 7d1c26f896185d04696d4aaa783d7fe3, type: 3}
+    - {fileID: 8300000, guid: c0d32656bf812fb44b104fbe8754f101, type: 3}
+  - groupName: PumpShotgun
+    clips:
+    - {fileID: 8300000, guid: feb0b95bcee86b743a2f5e448c15a613, type: 3}
+  - groupName: PickupAK47
+    clips:
+    - {fileID: 8300000, guid: e626d57f711467b46ac31649e37ad687, type: 3}
+  - groupName: PickupPumpShotgun
+    clips:
+    - {fileID: 8300000, guid: dba9b5bea57fb7d49b586fbaee22ea40, type: 3}
+  - groupName: Glock18
+    clips:
+    - {fileID: 8300000, guid: bcc010e00a2ea804aa34134b56c4d757, type: 3}
+  - groupName: PickupGlock18
+    clips:
+    - {fileID: 8300000, guid: 12cd9b925a4a35847b907648cf2115cd, type: 3}
+--- !u!114 &-543540436202470245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5012315903229473924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 579025514
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 1268291623972948640}
+  - {fileID: 5661083143704544970}
+  ForceRemoteRenderTimeframe: 0

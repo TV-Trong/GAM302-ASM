@@ -258,7 +258,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1.02
+  m_PixelsPerUnitMultiplier: 0.8
 --- !u!222 &23152981
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -845,7 +845,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 3
+  m_PixelsPerUnitMultiplier: 2
 --- !u!222 &271034848
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -925,7 +925,7 @@ MonoBehaviour:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: -1193174794, guid: 5bf84fabefc6cb7498eeb4b655d59a36, type: 3}
     m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: -1193174794, guid: 5bf84fabefc6cb7498eeb4b655d59a36, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -936,7 +936,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 329970917}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 196441873}
+        m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
+        m_MethodName: SingleMode
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &329970917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -966,7 +978,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1.02
+  m_PixelsPerUnitMultiplier: 0.8
 --- !u!222 &329970918
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1393,7 +1405,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1.02
+  m_PixelsPerUnitMultiplier: 0.8
 --- !u!222 &789839253
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2525,7 +2537,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 3
+  m_PixelsPerUnitMultiplier: 2
 --- !u!222 &1436066451
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2563,6 +2575,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 191f230697f86564d8c3784b787f6152, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentState: 0
 --- !u!4 &1439571682
 Transform:
   m_ObjectHideFlags: 0
@@ -2972,7 +2985,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1.02
+  m_PixelsPerUnitMultiplier: 0.8
 --- !u!222 &1706485719
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3117,7 +3130,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1.02
+  m_PixelsPerUnitMultiplier: 0.8
 --- !u!222 &1838045945
 CanvasRenderer:
   m_ObjectHideFlags: 0
