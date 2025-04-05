@@ -30,7 +30,7 @@ public class AudioManager : NetworkBehaviour
         }
     }
 
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void PlayAudioRpc(string groupName, string audioType, Vector3 soundPosition)
     {
         if (!clipDict.TryGetValue(groupName, out var group))
