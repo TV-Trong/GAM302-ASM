@@ -222,7 +222,7 @@ GameObject:
   - component: {fileID: 278862378}
   - component: {fileID: 278862377}
   m_Layer: 5
-  m_Name: Chat (1)
+  m_Name: Panel Message
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -584,7 +584,7 @@ GameObject:
   - component: {fileID: 736204971}
   - component: {fileID: 736204970}
   m_Layer: 5
-  m_Name: Chat (2)
+  m_Name: Panel Input
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -782,7 +782,7 @@ GameObject:
   - component: {fileID: 1157599798}
   - component: {fileID: 1157599797}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text Message
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -916,7 +916,7 @@ GameObject:
   - component: {fileID: 1166941028}
   - component: {fileID: 1166941027}
   m_Layer: 5
-  m_Name: Chat
+  m_Name: Panel Chat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1621,7 +1621,7 @@ GameObject:
   - component: {fileID: 1656858124}
   - component: {fileID: 1656858123}
   m_Layer: 5
-  m_Name: InputField (TMP)
+  m_Name: InputField Message
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1827,7 +1827,7 @@ GameObject:
   - component: {fileID: 1797502628}
   - component: {fileID: 1797502627}
   m_Layer: 5
-  m_Name: CanvaChat
+  m_Name: Game Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1867,7 +1867,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 1
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
