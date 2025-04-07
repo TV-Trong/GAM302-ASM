@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
+using System;
 
 public class ItemPickup : MonoBehaviour
 {
+    public Action OnItemPicked;
+
     [SerializeField] private ItemBase itemData;
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -21,13 +24,15 @@ public class ItemPickup : MonoBehaviour
             {
                 inventory.ammoCount[itemBullet.weaponType] += itemBullet.ammoAmount;
             }
-            else
+            else if (itemData is ItemBullet)
             {
                 Debug.Log("Vũ khí không có trong kho đồ, không thể cộng đạn.");
             }
 
             itemData.UseItem(player, inventory);
 
+            Debug.Log("Vật phẩm đã được nhặt. Gọi sự kiện spawn lại.");
+            OnItemPicked?.Invoke();
             Destroy(gameObject);
         }
     }

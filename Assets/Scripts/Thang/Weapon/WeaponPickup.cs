@@ -1,13 +1,14 @@
 using UnityEngine;
+using System;
 
 public class WeaponPickup : MonoBehaviour
 {
-    public WeaponBase weaponData; // Dữ liệu vũ khí từ ScriptableObject
+    public WeaponBase weaponData;
+
+    public Action OnItemPicked;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log($"Chạm vào: {other.name}");
-
         PlayerInventory playerInventory = other.GetComponent<PlayerInventory>();
 
         if (playerInventory == null)
@@ -25,6 +26,9 @@ public class WeaponPickup : MonoBehaviour
         Debug.Log($"Nhặt vũ khí: {weaponData.name}");
 
         playerInventory.PickUpWeapon(weaponData);
+
+        Debug.Log("Vật phẩm đã được nhặt. Gọi sự kiện spawn lại.");
+        OnItemPicked?.Invoke();
         Destroy(gameObject);
     }
 }

@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Bullet
   itemIcon: {fileID: 1804864025, guid: 9a22073e2b408a54bae28d9aefbc6113, type: 3}
-  weaponType: {fileID: 11400000, guid: 26d24265a1908bd4d9752b833c161a40, type: 2}
+  weaponType: {fileID: 0}
   ammoAmount: 40

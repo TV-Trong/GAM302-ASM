@@ -4,11 +4,11 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Weapon
   - Pistol
   - SpawnPoint
   - Obstacle
   - Shotgun
+  - AK
   layers:
   - Default
   - TransparentFX
@@ -46,9 +46,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Player
-    uniqueID: 2368786461
-    locked: 0
   - name: Item/Weapon
     uniqueID: 3296582047
+    locked: 0
+  - name: Player
+    uniqueID: 2368786461
     locked: 0
