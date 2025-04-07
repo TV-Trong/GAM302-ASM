@@ -12,12 +12,20 @@ public class ChatSystem : NetworkBehaviour
     private Queue<string> messages = new Queue<string>();
     private const int maxMessages = 9;
 
+    private PlayerNetworkProperties localPlayerNetworkProperties;
+
     public override void Spawned()
     {
         textMessage = GameObject.Find("Text Message").GetComponent<TextMeshProUGUI>();
         inputFieldMessage = GameObject.Find("InputField Message").GetComponent<TMP_InputField>();
         buttonSend = GameObject.Find("Button Send");
         buttonSend.GetComponent<Button>().onClick.AddListener(SendMessageChat);
+
+        // Get the PlayerNetworkProperties component for the local player
+        if (HasStateAuthority)
+        {
+            localPlayerNetworkProperties = GetComponent<PlayerNetworkProperties>();
+        }
     }
 
     public void SendMessageChat()
@@ -25,9 +33,16 @@ public class ChatSystem : NetworkBehaviour
         var message = inputFieldMessage.text;
         if (string.IsNullOrWhiteSpace(message))
             return;
-        
-        var id = Runner.LocalPlayer.PlayerId;
-        var text = $"Player {id}: {message}";
+
+        string playerName = "Unknown Player";
+
+        // If local player properties are available, get the player name
+        if (localPlayerNetworkProperties != null)
+        {
+            playerName = localPlayerNetworkProperties.PlayerName;
+        }
+
+        var text = $"{playerName}: {message}";
 
         RPCChat(text);
         inputFieldMessage.text = "";
@@ -38,9 +53,9 @@ public class ChatSystem : NetworkBehaviour
     {
         if (messages.Count >= maxMessages)
         {
-            messages.Dequeue(); // Xóa tin nhắn cũ nhất
+            messages.Dequeue(); // Remove the oldest message if limit is reached
         }
         messages.Enqueue(msg);
-        textMessage.text = string.Join("\n", messages); // Cập nhật UI
+        textMessage.text = string.Join("\n", messages); // Update UI
     }
 }

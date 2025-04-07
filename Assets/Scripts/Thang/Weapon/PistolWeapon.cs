@@ -11,15 +11,12 @@ public class PistolWeapon : WeaponBase
             return;
         }
 
-        // Tạo viên đạn
         GameObject bullet = Instantiate(bulletPrefab, position, Quaternion.identity);
 
-        // Lấy Rigidbody2D để áp dụng vận tốc
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
 
         if (rb != null)
         {
-            // Đảm bảo viên đạn đi theo hướng chính xác
             rb.velocity = direction * bulletForce;
         }
         else
