@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Fusion;
 using UnityEngine;
 
-public class PlayerInventory : MonoBehaviour
+public class PlayerInventory : NetworkBehaviour
 {
     public WeaponBase[] WeaponSlot = new WeaponBase[2];
     public Dictionary<WeaponBase, int> ammoCount = new();
@@ -111,7 +112,9 @@ public class PlayerInventory : MonoBehaviour
             yield break;
         }
 
-        AudioManager.Instance.PlayAudioRpc("Pickup" + weapon.name, "Master/SFX/Gun Shot", transform.root.position);
+        if (HasInputAuthority)
+            AudioManager.Instance.PlayAudioRpc("Pickup" + weapon.name, "Master/SFX/Gun Shot", transform.root.position);
+
         weaponScript.isPickingWeapon = true;
 
         if (weaponScript != null)
