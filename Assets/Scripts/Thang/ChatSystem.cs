@@ -12,20 +12,12 @@ public class ChatSystem : NetworkBehaviour
     private Queue<string> messages = new Queue<string>();
     private const int maxMessages = 9;
 
-    private PlayerNetworkProperties localPlayerNetworkProperties;
-
     public override void Spawned()
     {
         textMessage = GameObject.Find("Text Message").GetComponent<TextMeshProUGUI>();
         inputFieldMessage = GameObject.Find("InputField Message").GetComponent<TMP_InputField>();
         buttonSend = GameObject.Find("Button Send");
         buttonSend.GetComponent<Button>().onClick.AddListener(SendMessageChat);
-
-        // Get the PlayerNetworkProperties component for the local player
-        if (HasStateAuthority)
-        {
-            localPlayerNetworkProperties = GetComponent<PlayerNetworkProperties>();
-        }
     }
 
     public void SendMessageChat()
@@ -34,13 +26,7 @@ public class ChatSystem : NetworkBehaviour
         if (string.IsNullOrWhiteSpace(message))
             return;
 
-        string playerName = "Unknown Player";
-
-        // If local player properties are available, get the player name
-        if (localPlayerNetworkProperties != null)
-        {
-            playerName = localPlayerNetworkProperties.PlayerName;
-        }
+        string playerName = PlayerPrefs.GetString("LocalName");
 
         var text = $"{playerName}: {message}";
 
