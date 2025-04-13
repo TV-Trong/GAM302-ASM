@@ -1,18 +1,22 @@
-﻿using UnityEngine;
+﻿using Fusion;
+using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 
-public class ItemSpawner : MonoBehaviour
+public class ItemSpawner : NetworkBehaviour
 {
     [SerializeField] private List<GameObject> itemPrefabs;
     [SerializeField] private List<Transform> spawnPoints;
     [SerializeField] private int maxItems = 10;
 
-    private Dictionary<Transform, GameObject> activeItems = new Dictionary<Transform, GameObject>();
+    private Dictionary<Transform, NetworkObject> activeItems = new Dictionary<Transform, NetworkObject>();
 
-    void Start()
+    public override void Spawned()
     {
-        SpawnInitialItems();
+        if (HasStateAuthority)
+        {
+            SpawnInitialItems();
+        }
     }
 
     void SpawnInitialItems()
@@ -31,20 +35,19 @@ public class ItemSpawner : MonoBehaviour
         Transform spawnPoint = availablePoints[Random.Range(0, availablePoints.Count)];
         GameObject prefab = itemPrefabs[Random.Range(0, itemPrefabs.Count)];
 
-        GameObject itemInstance = Instantiate(prefab, spawnPoint.position, Quaternion.identity);
-        activeItems.Add(spawnPoint, itemInstance);
+        NetworkObject itemNetworkObj = Runner.Spawn(prefab, spawnPoint.position, Quaternion.identity);
+        activeItems.Add(spawnPoint, itemNetworkObj);
 
-        Debug.Log($"Spawn item mới: {itemInstance.name} tại {spawnPoint.name}");
+        Debug.Log($"Spawn item mới: {itemNetworkObj.name} tại {spawnPoint.name}");
 
-        // Gắn callback cho cả ItemPickup và WeaponPickup
-        ItemPickup itemPickup = itemInstance.GetComponent<ItemPickup>();
+        var itemPickup = itemNetworkObj.GetComponent<ItemPickup>();
         if (itemPickup != null)
         {
             itemPickup.OnItemPicked += () => OnItemPicked(spawnPoint);
             return;
         }
 
-        WeaponPickup weaponPickup = itemInstance.GetComponent<WeaponPickup>();
+        var weaponPickup = itemNetworkObj.GetComponent<WeaponPickup>();
         if (weaponPickup != null)
         {
             weaponPickup.OnItemPicked += () => OnItemPicked(spawnPoint);
@@ -58,7 +61,10 @@ public class ItemSpawner : MonoBehaviour
     {
         if (activeItems.ContainsKey(spawnPoint))
         {
-            Debug.Log($"Item bị nhặt tại {spawnPoint.name}, spawn item mới");
+            var item = activeItems[spawnPoint];
+            Debug.Log($"Item bị nhặt tại {spawnPoint.name}, despawn và spawn mới");
+
+            Runner.Despawn(item);
             activeItems.Remove(spawnPoint);
             SpawnNewItem();
         }

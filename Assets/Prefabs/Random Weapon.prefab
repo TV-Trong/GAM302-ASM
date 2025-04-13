@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 2871230807331980999}
   - component: {fileID: 3887837741770711432}
   - component: {fileID: 43040992256677044}
+  - component: {fileID: 6131740036774173609}
+  - component: {fileID: -2992376704402611704}
   m_Layer: 0
   m_Name: Random Weapon
   m_TagString: Untagged
@@ -172,6 +174,43 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponPrefabs:
-  - {fileID: 461837743332809864, guid: b7c194c7c68b3274986a18d25d503bea, type: 3}
-  - {fileID: 2825097157041586768, guid: 8ba0088d94e782245acbc59a260c032f, type: 3}
+  - RawGuidValue: b7c194c7c68b3274986a18d25d503bea
+  - RawGuidValue: 8ba0088d94e782245acbc59a260c032f
   destroyAfterSpawn: 1
+--- !u!114 &6131740036774173609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6148452864690676759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 2782175439
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 43040992256677044}
+  - {fileID: -2992376704402611704}
+  ForceRemoteRenderTimeframe: 0
+--- !u!114 &-2992376704402611704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6148452864690676759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stateAuthorityChangeErrorCorrectionDelta: 0
+  SyncScale: 0
+  SyncParent: 0
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 0

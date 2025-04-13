@@ -1,21 +1,28 @@
 using UnityEngine;
+using Fusion;
 using System;
 
-public class WeaponPickup : MonoBehaviour
+public class WeaponPickup : NetworkBehaviour
 {
     public WeaponBase weaponData;
-
     public Action OnItemPicked;
+
+    private bool isPicked = false;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        PlayerInventory playerInventory = other.GetComponent<PlayerInventory>();
+        if (isPicked) return;
 
-        if (playerInventory == null)
+        PlayerInventory playerInventory = other.GetComponent<PlayerInventory>();
+        PlayerNetworkProperties player = other.GetComponent<PlayerNetworkProperties>();
+
+        if (playerInventory == null || player == null)
         {
-            Debug.LogError("Player không có PlayerInventory!");
+            Debug.LogError("Không tìm thấy PlayerInventory hoặc PlayerNetworkProperties!");
             return;
         }
+
+        if (!player.HasInputAuthority) return;
 
         if (weaponData == null)
         {
@@ -23,12 +30,16 @@ public class WeaponPickup : MonoBehaviour
             return;
         }
 
-        Debug.Log($"Nhặt vũ khí: {weaponData.name}");
+        isPicked = true;
 
+        Debug.Log($"Nhặt vũ khí: {weaponData.name}");
         playerInventory.PickUpWeapon(weaponData);
 
-        Debug.Log("Vật phẩm đã được nhặt. Gọi sự kiện spawn lại.");
         OnItemPicked?.Invoke();
-        Destroy(gameObject);
+
+        if (Object.HasStateAuthority)
+        {
+            Runner.Despawn(Object);
+        }
     }
 }
