@@ -10,15 +10,9 @@ public class PlayerInventory : NetworkBehaviour
     private WeaponBase currentWeapon;
     private Weapon weaponScript;
 
-
     void Start()
     {
-        Debug.Log("Bắt đầu kiểm tra vũ khí trong Inventory");
-
-        if (WeaponSlot[0] == null) Debug.LogWarning("WeaponSlot[0] đang rỗng!");
-        if (WeaponSlot[1] == null) Debug.LogWarning("WeaponSlot[1] đang rỗng!");
-    
-        weaponScript =GetComponent<Weapon>();
+        weaponScript = GetComponent<Weapon>();
 
         GameObject pistolObject = GameObject.FindGameObjectWithTag("Pistol");
         if (pistolObject != null)
@@ -41,15 +35,16 @@ public class PlayerInventory : NetworkBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            Debug.Log("Nhấn phím 1 - Đổi sang vũ khí slot 1");
             StartCoroutine(EquipWeapon(WeaponSlot[0]));
+            SyncWeaponToAllClients(WeaponSlot[0]);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            Debug.Log("Nhấn phím 2 - Đổi sang vũ khí slot 2");
             StartCoroutine(EquipWeapon(WeaponSlot[1]));
+            SyncWeaponToAllClients(WeaponSlot[1]);
         }
     }
+
     public void PickUpWeapon(WeaponBase newWeapon)
     {
         if (newWeapon == null) return;
@@ -64,7 +59,8 @@ public class PlayerInventory : NetworkBehaviour
             Debug.Log($"Nhặt {newWeapon.name}, số đạn: {ammoCount[newWeapon]}");
         }
 
-        StartCoroutine(EquipWeapon(newWeapon)); 
+        StartCoroutine(EquipWeapon(newWeapon));
+        SyncWeaponToAllClients(newWeapon);
     }
 
     public void UseAmmo(WeaponBase weapon)
@@ -73,7 +69,6 @@ public class PlayerInventory : NetworkBehaviour
 
         if (weapon == WeaponSlot[0])
         {
-            //Debug.Log("Súng chính không giới hạn đạn.");
             return;
         }
 
@@ -102,6 +97,7 @@ public class PlayerInventory : NetworkBehaviour
         {
             DropWeapon();
             StartCoroutine(EquipWeapon(WeaponSlot[0]));
+            SyncWeaponToAllClients(WeaponSlot[0]);
         }
     }
 
@@ -119,14 +115,9 @@ public class PlayerInventory : NetworkBehaviour
 
         if (weaponScript != null)
         {
-            Debug.Log($"EquipWeapon: Đang trang bị {weapon.name}");
             weaponScript.CancelShooting();
             weaponScript.SetWeapon(weapon);
-            weaponScript.SetWeaponActive(true); // Đảm bảo vũ khí hiển thị 
-        }
-        else
-        {
-            Debug.LogWarning("weaponScript bị null!");
+            weaponScript.SetWeaponActive(true);
         }
 
         yield return new WaitForSeconds(2);
@@ -141,6 +132,16 @@ public class PlayerInventory : NetworkBehaviour
         {
             ammoCount.Remove(WeaponSlot[1]);
             WeaponSlot[1] = null;
+        }
+    }
+
+    // 👇 Gọi RPC đồng bộ vũ khí
+    void SyncWeaponToAllClients(WeaponBase weapon)
+    {
+        var playerNet = GetComponent<PlayerNetworkProperties>();
+        if (playerNet != null && playerNet.HasInputAuthority)
+        {
+            playerNet.RpcSetWeaponVisual(weapon.name);
         }
     }
 }

@@ -60,5 +60,32 @@ public class PlayerNetworkProperties : NetworkBehaviour
     {
         CurrentHP = Mathf.Min(BaseHP, CurrentHP + healAmount); // Hồi máu nhưng không vượt quá giới hạn máu tối đa
     }
-    
+
+    [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
+    public void RpcSetWeaponVisual(string weaponName)
+    {
+        RpcUpdateWeaponVisual(weaponName);
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RpcUpdateWeaponVisual(string weaponName)
+    {
+        WeaponBase weapon = WeaponDatabase.Instance.GetWeaponByName(weaponName);
+        if (weapon == null)
+        {
+            Debug.LogWarning($"Không tìm thấy vũ khí tên: {weaponName} trong database!");
+            return;
+        }
+
+        Weapon weaponComponent = GetComponent<Weapon>();
+        if (weaponComponent != null)
+        {
+            weaponComponent.SetWeapon(weapon);
+        }
+        else
+        {
+            Debug.LogWarning("Không tìm thấy component Weapon để cập nhật hình ảnh vũ khí.");
+        }
+    }
+
 }
