@@ -14,21 +14,14 @@ public class ItemPickup : MonoBehaviour
 
         if (player != null && inventory != null && itemData != null)
         {
-            if (itemData is ItemHP itemHP && player.CurrentHP >= player.BaseHP)
+            // Kiểm tra nếu item là hồi máu và máu đã đầy thì không cho nhặt
+            if (itemData is ItemHP && player.CurrentHP >= player.BaseHP)
             {
                 Debug.Log("HP đầy, không thể nhặt HP Item.");
                 return;
             }
 
-            if (itemData is ItemBullet itemBullet && inventory.ammoCount.ContainsKey(itemBullet.weaponType))
-            {
-                inventory.ammoCount[itemBullet.weaponType] += itemBullet.ammoAmount;
-            }
-            else if (itemData is ItemBullet)
-            {
-                Debug.Log("Vũ khí không có trong kho đồ, không thể cộng đạn.");
-            }
-
+            // Gọi logic sử dụng item (cộng máu, đạn, v.v.)
             itemData.UseItem(player, inventory);
 
             Debug.Log("Vật phẩm đã được nhặt. Gọi sự kiện spawn lại.");
