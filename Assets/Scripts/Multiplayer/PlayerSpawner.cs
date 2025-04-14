@@ -14,18 +14,20 @@ public class PlayerSpawner : SimulationBehaviour, IPlayerJoined
         {
             NetworkObject spawnedPlayer = Runner.Spawn(playerPrefab, GetSpawnPosition(), Quaternion.identity, inputAuthority: player);
             Runner.SetPlayerObject(player, spawnedPlayer);
+            spawnedPlayer.GetComponent<PlayerNetworkProperties>().NetworkID = player.PlayerId;
         }
     }
 
-    public void PlayerRespawn(PlayerRef localPlayer)
+    public void PlayerRespawn(NetworkObject playerObject)
     {
-        StartCoroutine(StartSpawningTimer(localPlayer));
+        var player = playerObject.GetComponent<PlayerNetworkProperties>();
+        StartCoroutine(StartSpawningTimer(player));
     }
 
-    System.Collections.IEnumerator StartSpawningTimer(PlayerRef localPlayer)
+    System.Collections.IEnumerator StartSpawningTimer(PlayerNetworkProperties playerNetworkProperties)
     {
         yield return new WaitForSeconds(respawnTimer);
-        var playerObject = Runner.Spawn(playerPrefab, GetSpawnPosition(), Quaternion.identity, localPlayer);
+        playerNetworkProperties.PlayerRespawnRpc();
     }
 
     Vector2 GetSpawnPosition()
