@@ -33,7 +33,6 @@ public class PlayerNetworkProperties : NetworkBehaviour
     public int NetworkID { get; set; }
 
     private Scoreboard scoreboard;
-    private ChangeDetector changeDetector;
 
 
     private void Update()
@@ -52,8 +51,6 @@ public class PlayerNetworkProperties : NetworkBehaviour
         {
             scoreboard.transform.localScale = Vector3.zero;
         }
-
-        Debug.Log(NetworkID);
     }
 
     public override void Spawned()
@@ -68,22 +65,14 @@ public class PlayerNetworkProperties : NetworkBehaviour
         DeathCount = Random.Range(0, 10);
 
         scoreboard = FindAnyObjectByType<Scoreboard>();
-        scoreboard.AddPlayerScore(this);
-        scoreboard.UpdatePlayerScore(this);
-        
-        changeDetector = GetChangeDetector(ChangeDetector.Source.SimulationState);
+        //scoreboard.AddPlayerScore(this);
+        //scoreboard.UpdatePlayerScore(this);
     }
 
     public override void Render()
     {
         HPSlider.value = CurrentHP / BaseHP;
         playerName.text = PlayerName;
-
-        foreach (var change in changeDetector.DetectChanges(this, out var previousBuffer, out var currentBuffer))
-        {
-            scoreboard.UpdatePlayerScore(this);
-            break;
-        }
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]

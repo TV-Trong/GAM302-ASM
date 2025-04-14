@@ -129,7 +129,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPosition: []
-  playerPrefab: {fileID: 5076637523551162343, guid: 4ebcd663ac9014a4a967c468d40f9a34, type: 3}
+  playersPrefab:
+  - {fileID: 5076637523551162343, guid: 4ebcd663ac9014a4a967c468d40f9a34, type: 3}
+  - {fileID: 5076637523551162343, guid: bce62f767b03f8d44a28cf79207f3e42, type: 3}
+  - {fileID: 5076637523551162343, guid: 110cf57b6319b8d40b2afe248a474ac4, type: 3}
+  - {fileID: 5076637523551162343, guid: 251d14061d99c4d47ac0be7a0549235e, type: 3}
   respawnTimer: 3
 --- !u!114 &-2152243161434802417
 MonoBehaviour:

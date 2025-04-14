@@ -5,14 +5,14 @@ using UnityEngine;
 public class PlayerSpawner : SimulationBehaviour, IPlayerJoined
 {
     public List<Transform> spawnPosition = new List<Transform>();
-    [SerializeField] GameObject playerPrefab;
+    [SerializeField] private List<GameObject> playersPrefab = new List<GameObject>();
     [SerializeField] float respawnTimer = 3f;
 
     public void PlayerJoined(PlayerRef player)
     {
         if (player == Runner.LocalPlayer)
         {
-            NetworkObject spawnedPlayer = Runner.Spawn(playerPrefab, GetSpawnPosition(), Quaternion.identity, inputAuthority: player);
+            NetworkObject spawnedPlayer = Runner.Spawn(playersPrefab[PlayerPrefs.GetInt("SkinIndex")], GetSpawnPosition(), Quaternion.identity, inputAuthority: player);
             Runner.SetPlayerObject(player, spawnedPlayer);
             spawnedPlayer.GetComponent<PlayerNetworkProperties>().NetworkID = player.PlayerId;
         }
