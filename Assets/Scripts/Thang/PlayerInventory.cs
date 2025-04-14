@@ -135,13 +135,14 @@ public class PlayerInventory : NetworkBehaviour
         }
     }
 
-    // 👇 Gọi RPC đồng bộ vũ khí
+
     void SyncWeaponToAllClients(WeaponBase weapon)
     {
         var playerNet = GetComponent<PlayerNetworkProperties>();
-        if (playerNet != null && playerNet.HasInputAuthority)
+        if (playerNet != null && playerNet.HasStateAuthority)
         {
             playerNet.RpcSetWeaponVisual(weapon.name);
         }
     }
+
 }

@@ -64,12 +64,6 @@ public class PlayerNetworkProperties : NetworkBehaviour
     [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
     public void RpcSetWeaponVisual(string weaponName)
     {
-        RpcUpdateWeaponVisual(weaponName);
-    }
-
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void RpcUpdateWeaponVisual(string weaponName)
-    {
         WeaponBase weapon = WeaponDatabase.Instance.GetWeaponByName(weaponName);
         if (weapon == null)
         {
@@ -80,12 +74,16 @@ public class PlayerNetworkProperties : NetworkBehaviour
         Weapon weaponComponent = GetComponent<Weapon>();
         if (weaponComponent != null)
         {
-            weaponComponent.SetWeapon(weapon);
+            if (weaponComponent.weaponData == null || weaponComponent.weaponData.name != weapon.name)
+            {
+                weaponComponent.SetWeapon(weapon);
+            }
         }
         else
         {
             Debug.LogWarning("Không tìm thấy component Weapon để cập nhật hình ảnh vũ khí.");
         }
     }
+
 
 }
