@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
+using Fusion;
 
-public class RandomWeapon : MonoBehaviour
+public class RandomWeapon : NetworkBehaviour
 {
-    [Header("Prefab vũ khí có thể spawn")]
-    public GameObject[] weaponPrefabs;
+    [Header("Prefab vũ khí có thể spawn (đã đăng ký trong NetworkProjectConfig)")]
+    public NetworkPrefabRef[] weaponPrefabs;
 
     [Header("Spawn chỉ một lần?")]
     public bool destroyAfterSpawn = true;
@@ -12,10 +13,13 @@ public class RandomWeapon : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (hasSpawned) return;
+        if (!Object || hasSpawned) return;
 
         if (other.CompareTag("Player"))
         {
+            // ✅ Chỉ cho phép người có quyền thực hiện
+            if (!HasStateAuthority) return;
+
             if (weaponPrefabs.Length == 0)
             {
                 Debug.LogWarning("Chưa gán prefab nào!");
@@ -23,16 +27,16 @@ public class RandomWeapon : MonoBehaviour
             }
 
             int index = Random.Range(0, weaponPrefabs.Length);
-            GameObject selected = weaponPrefabs[index];
+            NetworkPrefabRef selected = weaponPrefabs[index];
 
-            Instantiate(selected, transform.position, Quaternion.identity);
-            Debug.Log($"Đã spawn vũ khí: {selected.name}");
+            Runner.Spawn(selected, transform.position, Quaternion.identity);
+            Debug.Log("[Fusion] Đã spawn một vũ khí ngẫu nhiên.");
 
             hasSpawned = true;
 
             if (destroyAfterSpawn)
             {
-                Destroy(gameObject); // huỷ vùng spawn sau khi đã random xong
+                Runner.Despawn(Object);
             }
         }
     }

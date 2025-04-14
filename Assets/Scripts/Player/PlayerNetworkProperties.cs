@@ -118,5 +118,28 @@ public class PlayerNetworkProperties : NetworkBehaviour
         if (HasInputAuthority)
             gameObject.SetActive(true);
     }
+    [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
+    public void RpcSetWeaponVisual(string weaponName)
+    {
+        WeaponBase weapon = WeaponDatabase.Instance.GetWeaponByName(weaponName);
+        if (weapon == null)
+        {
+            Debug.LogWarning($"Không tìm thấy vũ khí tên: {weaponName} trong database!");
+            return;
+        }
+
+        Weapon weaponComponent = GetComponent<Weapon>();
+        if (weaponComponent != null)
+        {
+            if (weaponComponent.weaponData == null || weaponComponent.weaponData.name != weapon.name)
+            {
+                weaponComponent.SetWeapon(weapon);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Không tìm thấy component Weapon để cập nhật hình ảnh vũ khí.");
+        }
+    }
 
 }

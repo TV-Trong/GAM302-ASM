@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 5562762755288833244}
   - component: {fileID: 472128092470677506}
   - component: {fileID: 8241704566946999631}
+  - component: {fileID: 1647480588411980665}
+  - component: {fileID: -7026979164827208543}
   m_Layer: 0
   m_Name: HP
   m_TagString: Untagged
@@ -172,3 +174,40 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemData: {fileID: 11400000, guid: 8fffb0d9e51f388458bf9eba8befa662, type: 2}
+--- !u!114 &1647480588411980665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7377249376313025233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 3557250572
+  ObjectInterest: 1
+  Flags: 1
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 8241704566946999631}
+  - {fileID: -7026979164827208543}
+  ForceRemoteRenderTimeframe: 0
+--- !u!114 &-7026979164827208543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7377249376313025233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stateAuthorityChangeErrorCorrectionDelta: 0
+  SyncScale: 0
+  SyncParent: 0
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 0
