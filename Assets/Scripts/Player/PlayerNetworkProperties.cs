@@ -82,8 +82,10 @@ public class PlayerNetworkProperties : NetworkBehaviour
 
         if (CurrentHP <= 0)
         {
-            FindAnyObjectByType<PlayerSpawner>().PlayerRespawn(Object);
-            PlayerDieRpc();
+            FindAnyObjectByType<PlayerSpawner>().PlayerRespawn(Runner.LocalPlayer);
+            Runner.Despawn(Object);
+            //FindAnyObjectByType<PlayerSpawner>().PlayerRespawn(Object);
+            //PlayerDieRpc();
         }
     }
 
