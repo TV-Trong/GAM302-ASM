@@ -2,44 +2,64 @@ using UnityEngine;
 using Fusion;
 using System;
 
+[RequireComponent(typeof(NetworkTransform))]
 public class WeaponPickup : NetworkBehaviour
 {
     public WeaponBase weaponData;
     public Action OnItemPicked;
 
-    private bool isPicked = false;
+    [Networked] private bool isPicked { get; set; }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (isPicked) return;
+        var playerInventory = other.GetComponent<PlayerInventory>();
+        var player = other.GetComponent<PlayerNetworkProperties>();
 
-        PlayerInventory playerInventory = other.GetComponent<PlayerInventory>();
-        PlayerNetworkProperties player = other.GetComponent<PlayerNetworkProperties>();
-
-        if (playerInventory == null || player == null)
-        {
-            Debug.LogError("Không tìm thấy PlayerInventory hoặc PlayerNetworkProperties!");
-            return;
-        }
-
-        if (!player.HasInputAuthority) return;
-
-        if (weaponData == null)
-        {
-            Debug.LogError("WeaponBase chưa được gán vào WeaponPickup!");
-            return;
-        }
-
-        isPicked = true;
-
-        Debug.Log($"Nhặt vũ khí: {weaponData.name}");
-        playerInventory.PickUpWeapon(weaponData);
-
-        OnItemPicked?.Invoke();
+        if (playerInventory == null || player == null) return;
+        if (weaponData == null) return;
 
         if (Object.HasStateAuthority)
         {
-            Runner.Despawn(Object);
+            TryPickUp(playerInventory, player);
         }
+        else if (player.HasInputAuthority)
+        {
+            // Gửi yêu cầu pickup thông qua player
+            playerInventory.RequestPickupWeapon(Object); // 👈 Gọi qua Player
+        }
+    }
+
+    public void TryPickUp(PlayerInventory inventory, PlayerNetworkProperties player)
+    {
+        if (isPicked) return;
+
+        isPicked = true;
+
+        inventory.PickUpWeapon(weaponData);
+        OnItemPicked?.Invoke();
+
+        Debug.Log($"[Fusion] {player.name} đã nhặt {weaponData.name}");
+    }
+
+    public override void FixedUpdateNetwork()
+    {
+        if (isPicked)
+        {
+            HideVisual();
+
+            if (Object.HasStateAuthority)
+            {
+                Runner.Despawn(Object);
+            }
+        }
+    }
+
+    private void HideVisual()
+    {
+        foreach (var r in GetComponentsInChildren<Renderer>())
+            r.enabled = false;
+
+        foreach (var c in GetComponentsInChildren<Collider2D>())
+            c.enabled = false;
     }
 }

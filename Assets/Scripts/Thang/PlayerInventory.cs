@@ -144,5 +144,21 @@ public class PlayerInventory : NetworkBehaviour
             playerNet.RpcSetWeaponVisual(weapon.name);
         }
     }
+    public void RequestPickupWeapon(NetworkObject weaponObject)
+    {
+        if (HasInputAuthority)
+        {
+            RpcRequestWeaponPickup(weaponObject);
+        }
+    }
+
+    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+    private void RpcRequestWeaponPickup(NetworkObject weaponObject)
+    {
+        if (weaponObject != null && weaponObject.TryGetComponent<WeaponPickup>(out var pickup))
+        {
+            pickup.TryPickUp(this, GetComponent<PlayerNetworkProperties>());
+        }
+    }
 
 }

@@ -13,13 +13,12 @@ public class RandomWeapon : NetworkBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!Object || hasSpawned) return;
+        if (hasSpawned) return;
+
+        if (!Object.HasStateAuthority) return; // ✅ Chỉ host có quyền spawn
 
         if (other.CompareTag("Player"))
         {
-            // ✅ Chỉ cho phép người có quyền thực hiện
-            if (!HasStateAuthority) return;
-
             if (weaponPrefabs.Length == 0)
             {
                 Debug.LogWarning("Chưa gán prefab nào!");
@@ -29,15 +28,17 @@ public class RandomWeapon : NetworkBehaviour
             int index = Random.Range(0, weaponPrefabs.Length);
             NetworkPrefabRef selected = weaponPrefabs[index];
 
+            // ✅ Host spawn vũ khí
             Runner.Spawn(selected, transform.position, Quaternion.identity);
-            Debug.Log("[Fusion] Đã spawn một vũ khí ngẫu nhiên.");
+            Debug.Log("[Fusion] Đã spawn một vũ khí ngẫu nhiên tại vị trí đúng.");
 
             hasSpawned = true;
 
             if (destroyAfterSpawn)
             {
-                Runner.Despawn(Object);
+                Runner.Despawn(Object); // cũng xóa bộ random này luôn
             }
         }
     }
+
 }
