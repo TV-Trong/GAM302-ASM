@@ -168,10 +168,10 @@ TextureImporter:
       name: Map_2
       rect:
         serializedVersion: 2
-        x: 512
+        x: 511
         y: 1536
         width: 256
-        height: 256
+        height: 60
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -192,7 +192,7 @@ TextureImporter:
         x: 768
         y: 1536
         width: 256
-        height: 256
+        height: 62
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -210,9 +210,9 @@ TextureImporter:
       name: Map_4
       rect:
         serializedVersion: 2
-        x: 1024
+        x: 1216
         y: 1536
-        width: 256
+        width: 64
         height: 256
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -233,7 +233,7 @@ TextureImporter:
         serializedVersion: 2
         x: 1280
         y: 1536
-        width: 256
+        width: 64
         height: 256
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -463,9 +463,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 512
-        y: 1280
+        y: 1475
         width: 256
-        height: 256
+        height: 61
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -484,9 +484,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 768
-        y: 1280
+        y: 1477
         width: 256
-        height: 256
+        height: 59
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -504,9 +504,9 @@ TextureImporter:
       name: Map_18
       rect:
         serializedVersion: 2
-        x: 1024
+        x: 1217
         y: 1280
-        width: 256
+        width: 64
         height: 256
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -526,8 +526,8 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1280
-        y: 1280
-        width: 256
+        y: 1279
+        width: 62
         height: 256
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
