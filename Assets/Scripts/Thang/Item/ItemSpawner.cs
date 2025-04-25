@@ -33,9 +33,25 @@ public class ItemSpawner : NetworkBehaviour
         if (availablePoints.Count == 0) return;
 
         Transform spawnPoint = availablePoints[Random.Range(0, availablePoints.Count)];
-        GameObject prefab = itemPrefabs[Random.Range(0, itemPrefabs.Count)];
 
-        NetworkObject itemNetworkObj = Runner.Spawn(prefab, spawnPoint.position, Quaternion.identity);
+        var randomIndex = Random.Range(0, 100);
+
+        GameObject prefab = new GameObject();
+
+        if (randomIndex < 25)
+        {
+            prefab = itemPrefabs[0];
+        }
+        else if (randomIndex < 50)
+        {
+            prefab = itemPrefabs[1];
+        }
+        else
+        {
+            prefab = itemPrefabs[2];
+        }
+
+            NetworkObject itemNetworkObj = Runner.Spawn(prefab, spawnPoint.position, Quaternion.identity);
         activeItems.Add(spawnPoint, itemNetworkObj);
 
         Debug.Log($"Spawn item mới: {itemNetworkObj.name} tại {spawnPoint.name}");
