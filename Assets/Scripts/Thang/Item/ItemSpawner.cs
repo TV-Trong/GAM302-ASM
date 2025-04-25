@@ -38,11 +38,11 @@ public class ItemSpawner : NetworkBehaviour
 
         GameObject prefab = new GameObject();
 
-        if (randomIndex < 25)
+        if (randomIndex < 10)
         {
             prefab = itemPrefabs[0];
         }
-        else if (randomIndex < 50)
+        else if (randomIndex < 20)
         {
             prefab = itemPrefabs[1];
         }
